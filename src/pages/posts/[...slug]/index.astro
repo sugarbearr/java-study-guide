@@ -14,6 +14,8 @@ import ShareLinks from "./_components/ShareLinks.astro";
 import BackButton from "./_components/BackButton.astro";
 import BackToTopButton from "./_components/BackToTopButton.astro";
 import AdjacentPostNav from "./_components/AdjacentPostNav.astro";
+import SeriesNav from "@/components/SeriesNav.astro";
+import TocSidebar from "@/components/TocSidebar.astro";
 import config from "@/config";
 
 export async function getStaticPaths() {
@@ -73,7 +75,7 @@ const {
   hideEditPost,
 } = post.data;
 
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 
 let ogImageUrl: string | undefined;
 
@@ -110,9 +112,14 @@ const ogImage = ogImageUrl
 
   <main
     id="main-content"
-    class:list={["app-layout", { "mt-8": !config.features.showBackButton }]}
+    class:list={[
+      "mx-auto flex w-full max-w-[88rem] justify-center gap-8 px-4",
+      { "mt-8": !config.features.showBackButton },
+    ]}
     data-pagefind-body
   >
+    <SeriesNav currentId={post.id} class="hidden 2xl:block w-60 shrink-0" />
+    <div class="min-w-0 max-w-app w-full">
     <h1
       style={{ viewTransitionName: toTransitionName(post.id) }}
       class="text-accent inline-block text-2xl font-bold sm:text-3xl"
@@ -160,6 +167,8 @@ const ogImage = ogImageUrl
     <hr class="my-8 border-dashed" />
 
     <AdjacentPostNav {prevPost} {nextPost} />
+    </div>
+    <TocSidebar headings={headings} class="hidden xl:block w-64 shrink-0" />
   </main>
   <Footer />
 </PostLayout>

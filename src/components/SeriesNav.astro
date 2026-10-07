@@ -1,0 +1,77 @@
+---
+import { getCollection } from "astro:content";
+import { getPostUrl } from "@/utils/getPostPaths";
+import config from "@/config";
+
+type Props = {
+  currentId: string;
+  class?: string;
+};
+
+const { currentId, class: className = "" } = Astro.props;
+const locale = Astro.currentLocale ?? config.site.lang;
+
+const tagOrder = [
+  "总览",
+  "① 入门篇",
+  "② 进阶篇",
+  "③ 数据库篇",
+  "④ 中间件篇",
+  "⑤ 框架篇",
+  "⑥ 分布式与高并发篇",
+  "⑦ 面试篇",
+];
+
+const posts = await getCollection("posts");
+const groups = tagOrder
+  .map(tag => ({
+    tag,
+    items: posts
+      .filter(p => p.data.tags?.includes(tag))
+      .sort((a, b) => (a.data.pubDatetime < b.data.pubDatetime ? 1 : -1)),
+  }))
+  .filter(g => g.items.length > 0);
+
+const displayTitle = (t: string) => t.replace(/^\d+-/, "");
+---
+
+<nav aria-label="系列目录" class:list={["series-nav", className]}>
+  {
+    groups.map(g => (
+      <div class="mb-5">
+        <div class="text-muted-foreground mb-1.5 text-xs font-semibold tracking-wide">
+          {g.tag}
+        </div>
+        <ul class="space-y-1">
+          {g.items.map(p => (
+            <li>
+              <a
+                href={getPostUrl(p.id, p.filePath, locale)}
+                aria-current={p.id === currentId ? "page" : undefined}
+                class:list={[
+                  "block rounded-md px-2 py-1 text-[13px] leading-snug",
+                  p.id === currentId
+                    ? "bg-accent/10 font-semibold text-accent"
+                    : "text-muted-foreground hover:text-accent",
+                ]}
+              >
+                {displayTitle(p.data.title)}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</nav>
+
+<style>
+  .series-nav {
+    position: sticky;
+    top: 5.5rem;
+    align-self: start;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+</style>

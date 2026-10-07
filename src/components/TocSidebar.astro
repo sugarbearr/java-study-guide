@@ -1,0 +1,77 @@
+---
+type Props = {
+  headings?: { depth: number; slug: string; text: string }[];
+  class?: string;
+};
+
+const { headings = [], class: className = "" } = Astro.props;
+const toc = headings.filter(h => h.depth === 2 || h.depth === 3);
+---
+
+{
+  toc.length >= 3 && (
+    <aside id="toc" class:list={["toc-sidebar", className]}>
+      <div class="text-muted-foreground mb-2 text-xs font-semibold tracking-wide">
+        本页目录
+      </div>
+      <ul class="space-y-1.5">
+        {toc.map(h => (
+          <li class:list={[h.depth === 3 && "ps-4"]}>
+            <a
+              href={`#${h.slug}`}
+              class="toc-link block text-[13px] leading-snug text-muted-foreground hover:text-accent"
+              data-slug={h.slug}
+            >
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )
+}
+
+<style>
+  .toc-sidebar {
+    position: sticky;
+    top: 5.5rem;
+    align-self: start;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    font-size: 0.85rem;
+  }
+  .toc-link.active {
+    color: var(--accent);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  const w = window as any;
+  function initToc() {
+    const links = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>("#toc .toc-link")
+    );
+    if (!links.length) return;
+    const heads = links
+      .map(a => document.getElementById(decodeURIComponent(a.hash.slice(1))))
+      .filter((h): h is HTMLElement => !!h);
+    if (w.__tocScroll) {
+      window.removeEventListener("scroll", w.__tocScroll);
+      w.__tocScroll = null;
+    }
+    const onScroll = () => {
+      let idx = 0;
+      for (let i = 0; i < heads.length; i++) {
+        if (heads[i].getBoundingClientRect().top < 110) idx = i;
+      }
+      links.forEach((l, i) => l.classList.toggle("active", i === idx));
+    };
+    w.__tocScroll = onScroll;
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+  document.addEventListener("astro:page-load", initToc);
+  initToc();
+</script>
