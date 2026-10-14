@@ -42,6 +42,8 @@ DESC student;                                      -- 查看表结构
 
 三个层级：**database（库）→ table（表）→ row（行）/ column（列）**。一个库对应一个业务域（如订单库、用户库），一张表对应一类实体，一行就是一条记录。
 
+**存储引擎**：MySQL 5.5 之后**默认 InnoDB**（5.5 前默认 MyISAM）。InnoDB **支持事务、行级锁、外键与 MVCC**，是绝大多数业务表的选择；MyISAM 只有表锁、不支持事务，仅个别只读/计数场景还在用。建表时可显式指定：`ENGINE=InnoDB`（本文所有建表语句都显式写了，属于好习惯）；用 `SHOW TABLE STATUS LIKE '表名'` 或 `SHOW CREATE TABLE 表名` 可查看某张表实际用的引擎。
+
 客户端工具：命令行 `mysql`、IDEA 自带 Database 面板、Navicat / DataGrip / DBeaver（免费），学习期任选其一即可。
 
 ### 2. 数据类型选择与约束 ⭐

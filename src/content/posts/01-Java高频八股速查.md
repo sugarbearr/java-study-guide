@@ -92,7 +92,7 @@ draft: false
 - [ ] **Q：ConcurrentHashMap 并发 put 为什么安全？** —— 1.8 用 CAS 初始化 + 对桶头节点 synchronized，锁粒度到单个桶；get 无锁靠 volatile ｜ 详见[《01-多线程与并发编程》](/java-study-guide/posts/01-多线程与并发编程/)
 - [ ] **Q：虚拟线程是什么？** —— JDK 21 正式特性：由 JVM 调度的轻量线程，阻塞时不占用 OS 线程，可创建百万级，适合 IO 密集场景 ｜ 详见[《01-多线程与并发编程》](/java-study-guide/posts/01-多线程与并发编程/)
 
-### JVM（15 题）
+### JVM（16 题）
 
 > 面试形式：概念之外一定接实操——CPU 飙高与 OOM 排查两类题要按步骤背熟，最好配上自己跑过的例子。
 
@@ -107,6 +107,7 @@ draft: false
 - [ ] **Q：CMS 的原理与问题？** —— 并发标记-清除收集器，四阶段中标记可并发；产生内存碎片、并发失败退化为 Serial Old，已在新版移除 ｜ 详见[《02-JVM核心》](/java-study-guide/posts/02-JVM核心/)
 - [ ] **Q：G1 的原理？** —— 堆划分为多个 Region，按"停顿时间目标"优先回收垃圾最多的 Region（Mixed GC），JDK 9 起默认 ｜ 详见[《02-JVM核心》](/java-study-guide/posts/02-JVM核心/)
 - [ ] **Q：ZGC 的特点？** —— 着色指针+读屏障实现并发整理，停顿 <1ms 且与堆大小无关，适合超大堆低延迟场景 ｜ 详见[《02-JVM核心》](/java-study-guide/posts/02-JVM核心/)
+- [ ] **Q：并发标记为什么会"漏标"？CMS 和 G1 怎么解决？** —— 漏标需同时满足「黑对象新增指向白对象的引用」+「灰到白的路径被删」；CMS 用增量更新（写后屏障记录新引用、黑变灰重扫），G1 用 SATB（写前屏障保留删除前旧值，浮动垃圾下次收）｜ 详见[《02-JVM核心》](/java-study-guide/posts/02-JVM核心/)
 - [ ] **Q：类加载过程？** —— 加载 → 验证 → 准备（静态变量赋零值）→ 解析 → 初始化（执行 \<clinit\>），五步常按"什么时候触发初始化"追问 ｜ 详见[《02-JVM核心》](/java-study-guide/posts/02-JVM核心/)
 - [ ] **Q：双亲委派模型？** —— 类加载请求逐级向上委托（自定义 → 应用 → 扩展 → 启动），保证核心类安全与唯一；打破场景：SPI、热部署、Tomcat 隔离 ｜ 详见[《02-JVM核心》](/java-study-guide/posts/02-JVM核心/)
 - [ ] **Q：CPU 飙到 100% 怎么排查？** —— top 找进程 → top -Hp 找线程 → printf '%x' 转十六进制 → jstack 中按 nid 定位到代码行 ｜ 详见[《02-JVM核心》](/java-study-guide/posts/02-JVM核心/)

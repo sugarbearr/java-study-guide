@@ -10,6 +10,7 @@ Nginx 是高性能的 **HTTP 服务器 / 反向代理服务器**，C 语言编�
 
 - **epoll 事件驱动 + 异步非阻塞 IO**：一个 worker 进程用 IO 多路复用同时处理成千上万连接，不为每个连接分配线程（对比传统"一连接一线程"模型）；
 - **master-worker 架构**：master 读配置、管理 worker；worker 真正处理请求（数量 ≈ CPU 核数，`worker_processes auto`），worker 挂了 master 自动拉起，改配置可平滑 reload 不中断服务。
+- **惊群问题与 accept_mutex**：多个 worker 都阻塞在同一个监听套接字上，新连接到来时**所有 worker 被同时唤醒，却只有一个能 accept 成功**，其余白白被唤醒消耗 CPU，这就是惊群（thundering herd）。Nginx 的应对是 **`accept_mutex`**：worker 之间用互斥锁**串行竞争** accept 权，保证同一时刻只有一个 worker 在等待新连接，其余安心处理已有连接。新版 Linux 内核提供 `EPOLLEXCLUSIVE` 标志，由内核只唤醒一个等待者，承担了同类职责；`accept_mutex` 在高并发下可能成为瓶颈，可按需关闭（`accept_mutex off`）。
 
 **正向代理 vs 反向代理（必会）**：
 
