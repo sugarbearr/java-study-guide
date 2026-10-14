@@ -37,6 +37,8 @@ list.forEach(x -> System.out.println(x));
 | `Supplier<T>` | `T get()` | 无输入输出 T（生产） | `collect(Supplier, ...)`、`Stream.generate` |
 | `Predicate<T>` | `boolean test(T t)` | 输入 T 返回布尔（判断） | `filter` |
 
+- **Predicate 的组合方法**：`p.and(q)`、`p.or(q)`、`p.negate()` 返回新的 Predicate，可就地拼装复杂条件，如 `list.removeIf(s -> s.isBlank().negate())` 等价于保留非空白项。注意 `p.negate().and(p)` 恒为 false（同一判定与其取反互斥，任何输入都不可能同时成立）——这类"逻辑组合推演"是选择题常客。
+
 - 变体：`BiFunction<T,U,R>`、`UnaryOperator<T>`、`IntPredicate` 等针对基本类型的特化版（避免装箱）。
 
 ### 方法引用
@@ -91,6 +93,7 @@ List<String> chars = words.stream().map(w -> w.split(""))
 ```
 
 - `reduce` 聚合：`Optional<Integer> sum = nums.stream().reduce(Integer::sum);` 带初值版本返回具体值。
+- **`groupingBy` 的默认返回类型**：两参版本 `groupingBy(classifier)` 默认返回 **`HashMap`，且每个分组的值默认是 `List`**（下游收集器默认 `toList()`）。要保序用三参版本传 `LinkedHashMap::new`；要改下游聚合传 `counting()/summingDouble()/mapping()`。同理 `toMap` 的默认实现也是 HashMap。
 - 数值流避免装箱：`mapToInt(Order::getAmount).sum()/average()/summaryStatistics()`。
 - `collect` 到 Map：`Collectors.toMap(Order::getId, o -> o)`；**value 为 null 或 key 重复会抛异常**，需传合并函数：`toMap(k, v, (a, b) -> a)`。
 

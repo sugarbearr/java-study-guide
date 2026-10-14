@@ -82,6 +82,9 @@ db.product.aggregate([
 ])
 ```
 
+- **管道严格按数组顺序执行**，顺序直接影响性能与正确性：**`$match` 尽量前置**（先滤掉无关文档，减少后续阶段的数据量，还能用上索引，等价于 SQL 里"先 WHERE 再 GROUP BY"）；`$group` 做聚合；`$sort` 放最后对**聚合结果**排序。反过来把 `$match` 放在 `$group` 之后，等于对全量文档白算一遍聚合。
+- 常用阶段：`$match`（过滤）→ `$project`（选字段/计算）→ `$group`（分组聚合，配 `$sum/$avg/$max`）→ `$sort`（排序）→ `$limit/$skip`（分页）→ `$lookup`（左连接，相当于 JOIN）→ `$unwind`（把数组字段拆成多行）。
+
 ### 3. Spring Boot 整合（MongoTemplate 常用操作）
 
 ```xml

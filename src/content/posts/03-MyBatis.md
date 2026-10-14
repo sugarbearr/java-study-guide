@@ -37,7 +37,7 @@ spring:
     password: root123
 mybatis-plus:
   configuration:
-    map-underscore-to-camel-case: true   # created_at → createdAt 自动驼峰映射
+    map-underscore-to-camel-case: true   # created_at → createdAt 自动驼峰映射；设为 false 会导致这类字段静默为 null
   global-config:
     db-config:
       id-type: auto                      # 主键用数据库自增
@@ -267,7 +267,7 @@ XML 写法：`search` 语句支持 keyword（模糊）、done（等值）、时�
 **Q：动态 SQL 有哪些标签？**
 - if 条件拼接；where 自动去掉开头 AND/OR；set 自动去掉末尾逗号。
 - choose/when/otherwise 实现多分支；foreach 处理集合（in、批量插入）。
-- trim 可自定义前后缀的增删，是 where/set 的底层实现。
+- trim 可自定义前后缀的增删，是 where/set 的底层实现——`<set>` 实际就是 `trim(prefix="SET", suffixOverrides=",")` 的语法糖，自动去掉末尾多余的逗号，所以所有 `<if>` 都不命中时它还会生成空的 SET 子句（要防这种全空更新，应在 Service 层先校验）。
 
 **Q：MyBatis 和 JPA/Hibernate 怎么选？**
 - MyBatis 半自动：SQL 自己写，可控、易优化，适合复杂查询、报表、互联网业务。

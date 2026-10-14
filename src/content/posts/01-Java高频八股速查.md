@@ -31,7 +31,7 @@ draft: false
 - [ ] **Q：String 为什么设计成不可变？** —— private final 存储不暴露修改方法：安全性、hashCode 可缓存、字符串常量池复用 ｜ 详见[《02-面向对象与核心类》](/java-study-guide/posts/02-面向对象与核心类/)
 - [ ] **Q：String、StringBuilder、StringBuffer 怎么选？** —— 常量用 String，单线程频繁拼接用 StringBuilder，多线程共享拼接用 StringBuffer ｜ 详见[《02-面向对象与核心类》](/java-study-guide/posts/02-面向对象与核心类/)
 - [ ] **Q：Integer 缓存机制？** —— IntegerCache 缓存 -128~127，范围内 == 为 true，范围外必须用 equals，面试常挖箱拆箱 NPE ｜ 详见[《02-面向对象与核心类》](/java-study-guide/posts/02-面向对象与核心类/)
-- [ ] **Q：Java 是值传递还是引用传递？** —— 永远是值传递；传对象时复制的是引用值，方法内改属性生效、重新赋值不影响原对象 ｜ 详见[《02-面向对象与核心类》](/java-study-guide/posts/02-面向对象与核心类/)
+- [ ] **Q：Java 是值传递还是引用传递？** —— 永远是值传递；传对象时复制的是引用值，方法内改属性生效、重新赋值不影响原对象 ｜ 详见[《01-环境搭建与基础语法》](/java-study-guide/posts/01-环境搭建与基础语法/)
 - [ ] **Q：重载与重写的区别？** —— 重载是同类同名不同参（编译期确定），重写是子类覆盖父类同签名方法（运行期多态）｜ 详见[《02-面向对象与核心类》](/java-study-guide/posts/02-面向对象与核心类/)
 - [ ] **Q：接口与抽象类的区别？** —— 抽象类表示"是什么"（单继承、可有状态），接口表示"能做什么"（多实现，Java 8 后可有 default/static 方法）｜ 详见[《02-面向对象与核心类》](/java-study-guide/posts/02-面向对象与核心类/)
 - [ ] **Q：final 关键字有哪些用法？** —— 类不可继承、方法不可重写、变量不可重新赋值（引用不变但对象内容可变）｜ 详见[《02-面向对象与核心类》](/java-study-guide/posts/02-面向对象与核心类/)
