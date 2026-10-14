@@ -32,13 +32,13 @@ flowchart TD
 
 | 阶段 | 建议时长 | 核心文件 | 过关标准（全部满足才进入下一阶段） |
 |------|---------|----------|------------------------------------|
-| ① 入门篇 | 3 周 | [入门篇 5 个文件](/java-study-guide/posts/01-环境搭建与基础语法/) | 不查资料能写出：集合统计词频、异常+反射的小工具、Stream 处理订单列表；文件末尾面试题能答 80% |
-| ② 进阶篇 | 3 周 | [并发](/java-study-guide/posts/01-多线程与并发编程/)、[JVM](/java-study-guide/posts/02-JVM核心/)、[IO网络](/java-study-guide/posts/03-IO模型与网络编程/) | 能手写线程池使用代码并解释 7 参数；能用 jstack/jmap 分析死锁与 OOM；能讲三次握手与 NIO 三大件 |
+| ① 入门篇 | 3 周 | [入门篇文件](/java-study-guide/posts/01-环境搭建与基础语法/) + [设计模式](/java-study-guide/posts/07-设计模式/) | 不查资料能写出：集合统计词频、异常+反射的小工具、Stream 处理订单列表；文件末尾面试题能答 80% |
+| ② 进阶篇 | 3 周 | [并发](/java-study-guide/posts/01-多线程与并发编程/)、[JVM](/java-study-guide/posts/02-JVM核心/)、[IO网络](/java-study-guide/posts/03-IO模型与网络编程/)、[工具链](/java-study-guide/posts/04-开发工具链-Git-Maven-Linux/) | 能手写线程池使用代码并解释 7 参数；能用 jstack/jmap 分析死锁与 OOM；能讲三次握手与 NIO 三大件；Git 协作命令盲打、Maven 依赖冲突会排查 |
 | ③ 数据库篇 | 2 周 | [MySQL 基础](/java-study-guide/posts/01-MySQL基础与SQL实战/)、[索引事务调优](/java-study-guide/posts/02-索引-事务-锁与调优/) | 学生选课库 10 道 SQL 全部独立完成；能解释 B+ 树/MVCC/三大日志；能对慢 SQL 做 explain 分析 |
-| ④ 框架篇 | 3 周 | [Spring](/java-study-guide/posts/01-Spring核心/)、[SpringBoot](/java-study-guide/posts/02-SpringBoot实战/)、[MyBatis](/java-study-guide/posts/03-MyBatis/)、[SpringCloud](/java-study-guide/posts/04-SpringCloud微服务/) | todo-list 项目上线本地运行：CRUD+校验+全局异常+缓存；能讲自动配置原理与事务失效场景 |
+| ④ 框架篇 | 3 周 | [Spring](/java-study-guide/posts/01-Spring核心/)、[SpringBoot](/java-study-guide/posts/02-SpringBoot实战/)、[MyBatis](/java-study-guide/posts/03-MyBatis/)、[SpringCloud](/java-study-guide/posts/04-SpringCloud微服务/)、[单元测试](/java-study-guide/posts/05-单元测试与工程质量/)、[认证安全](/java-study-guide/posts/06-认证与安全/) | todo-list 项目上线本地运行：CRUD+校验+全局异常+缓存+登录鉴权；核心 Service 有单测；能讲自动配置原理与事务失效场景 |
 | ⑤ 中间件篇 | 3 周 | [Redis](/java-study-guide/posts/01-Redis/)、[RabbitMQ](/java-study-guide/posts/02-RabbitMQ/)、[Kafka](/java-study-guide/posts/03-Kafka/)、[RocketMQ](/java-study-guide/posts/04-RocketMQ/)、[ES](/java-study-guide/posts/05-Elasticsearch/)、[ZK/Nacos](/java-study-guide/posts/06-ZooKeeper与Nacos/)、[Nginx](/java-study-guide/posts/07-Nginx/)、[MongoDB](/java-study-guide/posts/08-MongoDB/) | 每个中间件都完成 Docker 部署 + Spring Boot 整合 demo；能说出每个件的 3 个使用场景与核心可靠性问题 |
-| ⑥ 分布式与高并发 | 2 周 | [分布式理论](/java-study-guide/posts/01-分布式理论基础/)、[高并发设计](/java-study-guide/posts/02-高并发系统设计/) | 能白板画出秒杀系统全链路并解释防超卖；能对比三种分布式锁与四种限流算法 |
-| ⑦ 面试篇 | 3~4 周 | [八股速查一](/java-study-guide/posts/01-Java高频八股速查/)、[八股速查二](/java-study-guide/posts/02-数据库与中间件面试速查/)、[选择填空题库](/java-study-guide/posts/05-选择填空题库/)、[考点详略表](/java-study-guide/posts/06-考点详略表/)、[算法路线](/java-study-guide/posts/03-算法刷题路线/)、[简历求职](/java-study-guide/posts/04-简历与求职指南/) | 175 道自测题全部打勾；章节小考逐章 90%+；综合大考 20 题 ≥85%；算法 200 题完成；简历定稿并完成 3 次模拟面试 |
+| ⑥ 分布式与高并发 | 2 周 | [分布式理论](/java-study-guide/posts/01-分布式理论基础/)、[高并发设计](/java-study-guide/posts/02-高并发系统设计/)、[场景题集](/java-study-guide/posts/03-系统设计场景题/) | 能白板画出秒杀系统全链路并解释防超卖；能对比三种分布式锁与四种限流算法；短链/延迟任务/排行榜各能讲 5 分钟 |
+| ⑦ 面试篇 | 3~4 周 | [八股速查一](/java-study-guide/posts/01-Java高频八股速查/)、[八股速查二](/java-study-guide/posts/02-数据库与中间件面试速查/)、[选择填空题库](/java-study-guide/posts/05-选择填空题库/)、[考点详略表](/java-study-guide/posts/06-考点详略表/)、[算法路线](/java-study-guide/posts/03-算法刷题路线/)、[简历求职](/java-study-guide/posts/04-简历与求职指南/) | 223 张闪卡全部过一遍（含速查 175 + 设计模式/工具链/单测/认证/场景题新章）；141 题题库全刷；章节小考逐章 90%+；综合大考 20 题 ≥85%；算法 200 题完成；简历定稿并完成 3 次模拟面试 |
 
 合计约 19~20 周（零基础按部就班约 5 个月，加上缓冲 6 个月）。
 

@@ -1,9 +1,9 @@
 ---
 title: "07-Nginx"
 description: "阶段：中间件篇 ｜ 建议时长：2 天 ｜ 前置：无（了解 HTTP、前后端分离更佳）"
-pubDatetime: 2026-08-24T18:00:00
+pubDatetime: 2026-08-24T04:00:00
 tags:
-  - "④ 中间件篇"
+  - "⑤ 中间件篇"
 
 draft: false
 ---

@@ -1,9 +1,9 @@
 ---
 title: "02-RabbitMQ"
 description: "阶段：中间件篇 ｜ 建议时长：3 天 ｜ 前置：01-Redis（中间件基础）、Spring Boot 基础"
-pubDatetime: 2026-08-26T05:00:00
+pubDatetime: 2026-08-25T15:00:00
 tags:
-  - "④ 中间件篇"
+  - "⑤ 中间件篇"
 
 draft: false
 ---

@@ -1,9 +1,9 @@
 ---
 title: "03-Kafka"
 description: "阶段：中间件篇 ｜ 建议时长：3 天 ｜ 前置：02-RabbitMQ（理解消息队列基本概念）"
-pubDatetime: 2026-08-25T22:00:00
+pubDatetime: 2026-08-25T08:00:00
 tags:
-  - "④ 中间件篇"
+  - "⑤ 中间件篇"
 
 draft: false
 ---

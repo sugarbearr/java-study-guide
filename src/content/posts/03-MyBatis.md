@@ -1,9 +1,9 @@
 ---
 title: "MyBatis"
 description: "阶段：框架篇 ｜ 建议时长：4 天 ｜ 前置：02-SpringBoot实战.md（及数据库篇）"
-pubDatetime: 2026-08-23T14:00:00
+pubDatetime: 2026-08-27T02:00:00
 tags:
-  - "⑤ 框架篇"
+  - "④ 框架篇"
 
 draft: false
 ---

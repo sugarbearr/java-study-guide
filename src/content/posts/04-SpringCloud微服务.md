@@ -1,9 +1,9 @@
 ---
 title: "SpringCloud微服务"
 description: "阶段：框架篇 ｜ 建议时长：6 天 ｜ 前置：02-SpringBoot实战.md"
-pubDatetime: 2026-08-23T07:00:00
+pubDatetime: 2026-08-26T19:00:00
 tags:
-  - "⑤ 框架篇"
+  - "④ 框架篇"
 
 draft: false
 ---

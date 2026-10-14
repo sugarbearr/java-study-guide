@@ -19,35 +19,40 @@ STAGES = [
         "01-入门篇/03-集合与泛型.md",
         "01-入门篇/04-异常-IO-反射-注解.md",
         "01-入门篇/05-Lambda-Stream与Java8新特性.md",
+        "01-入门篇/07-设计模式.md",
     ]),
     ("② 进阶篇", [
         "02-进阶篇/01-多线程与并发编程.md",
         "02-进阶篇/02-JVM核心.md",
         "02-进阶篇/03-IO模型与网络编程.md",
+        "02-进阶篇/04-开发工具链-Git-Maven-Linux.md",
     ]),
     ("③ 数据库篇", [
         "03-数据库篇/01-MySQL基础与SQL实战.md",
         "03-数据库篇/02-索引-事务-锁与调优.md",
     ]),
-    ("④ 中间件篇", [
-        "04-中间件篇/01-Redis.md",
-        "04-中间件篇/02-RabbitMQ.md",
-        "04-中间件篇/03-Kafka.md",
-        "04-中间件篇/04-RocketMQ.md",
-        "04-中间件篇/05-Elasticsearch.md",
-        "04-中间件篇/06-ZooKeeper与Nacos.md",
-        "04-中间件篇/07-Nginx.md",
-        "04-中间件篇/08-MongoDB.md",
+    ("④ 框架篇", [
+        "04-框架篇/01-Spring核心.md",
+        "04-框架篇/02-SpringBoot实战.md",
+        "04-框架篇/03-MyBatis.md",
+        "04-框架篇/04-SpringCloud微服务.md",
+        "04-框架篇/05-单元测试与工程质量.md",
+        "04-框架篇/06-认证与安全.md",
     ]),
-    ("⑤ 框架篇", [
-        "05-框架篇/01-Spring核心.md",
-        "05-框架篇/02-SpringBoot实战.md",
-        "05-框架篇/03-MyBatis.md",
-        "05-框架篇/04-SpringCloud微服务.md",
+    ("⑤ 中间件篇", [
+        "05-中间件篇/01-Redis.md",
+        "05-中间件篇/02-RabbitMQ.md",
+        "05-中间件篇/03-Kafka.md",
+        "05-中间件篇/04-RocketMQ.md",
+        "05-中间件篇/05-Elasticsearch.md",
+        "05-中间件篇/06-ZooKeeper与Nacos.md",
+        "05-中间件篇/07-Nginx.md",
+        "05-中间件篇/08-MongoDB.md",
     ]),
     ("⑥ 分布式与高并发篇", [
         "06-分布式与高并发篇/01-分布式理论基础.md",
         "06-分布式与高并发篇/02-高并发系统设计.md",
+        "06-分布式与高并发篇/03-系统设计场景题.md",
     ]),
     ("⑦ 面试篇", [
         "07-面试篇/01-Java高频八股速查.md",
@@ -56,8 +61,16 @@ STAGES = [
         "07-面试篇/04-简历与求职指南.md",
         "07-面试篇/05-选择填空题库.md",
         "07-面试篇/06-考点详略表.md",
+        "07-面试篇/07-术语速查表.md",
     ]),
 ]
+CARD_EXTRA = {
+    "01-入门篇/07-设计模式.md",
+    "02-进阶篇/04-开发工具链-Git-Maven-Linux.md",
+    "04-框架篇/05-单元测试与工程质量.md",
+    "04-框架篇/06-认证与安全.md",
+    "06-分布式与高并发篇/03-系统设计场景题.md",
+}
 FEATURED = {"ROADMAP.md", "STUDY-TRACKER.md", "05-选择填空题库.md", "06-考点详略表.md"}
 EMOJI_CLASS = (
     "\U0001F000-\U0001FAFF\u2190-\u21FF\u2300-\u23FF"
@@ -117,7 +130,7 @@ def main():
     ref_link_re = re.compile(r"(?:｜\s*)?详见\s*\[《[^》]+》\]\((/java-study-guide/posts/[^)]+?)/\)\s*$")
     ref_plain_re = re.compile(r"(?:｜\s*)?详见《([^》]+)》\s*$")
     head_re = re.compile(r"^###\s+(.+?)\s*$", re.M)
-    sec_re = re.compile(r"^##\s+(选择题|填空题)\s*$", re.M)
+    sec_re = re.compile(r"^##\s+(选择题|填空题|判断题)\s*$", re.M)
     card_line = re.compile(r"^\s*- \[( |x)\] \*\*Q：(.+?)\*\*\s*——\s*(.+?)\s*$", re.M)
 
     meta, cards, quiz = [], [], []
@@ -173,7 +186,7 @@ title: 关于本指南
 
 - **零基础**：先读[学习路线图](/java-study-guide/posts/ROADMAP/)，然后从[环境搭建与基础语法](/java-study-guide/posts/01-环境搭建与基础语法/)逐篇推进，配合[进度打卡表](/java-study-guide/posts/STUDY-TRACKER/)勾选。
 - **有基础**：把[打卡表](/java-study-guide/posts/STUDY-TRACKER/)当自测清单，不会的再进对应文章补。
-- **面试冲刺**：过两份[八股速查](/java-study-guide/posts/01-Java高频八股速查/)，刷[选择填空题库](/java-study-guide/posts/05-选择填空题库/)，按[考点详略表](/java-study-guide/posts/06-考点详略表/)取舍精力；「练习场」里有章节小考、综合大考和八股闪卡。
+- **面试冲刺**：过两份[八股速查](/java-study-guide/posts/01-Java高频八股速查/)，刷[选择填空判断题库](/java-study-guide/posts/05-选择填空题库/)，按[考点详略表](/java-study-guide/posts/06-考点详略表/)取舍精力；「练习场」里有章节小考、综合大考和八股闪卡。
 - **离线版**：仓库根目录的 `index.html` 双击即可离线使用全部练习功能。
 
 学习进度按浏览器域名分别保存，可用练习场左下角「导出进度 / 导入进度」迁移。
@@ -190,22 +203,25 @@ title: 关于本指南
 
     for i, m in enumerate(meta):
         md = contents[m["path"]]
-        is_bank_list = "速查" in m["title"]
-        is_bank = "选择填空题库" in m["title"]
+        is_bank_list = "速查" in m["title"] or m["path"] in CARD_EXTRA
+        is_bank = m["path"].endswith("选择填空题库.md")
         if not (is_bank or is_bank_list):
             continue
         cmarks = [(x.start(), re.sub(r"（\d+\s*题）", "", x.group(1)).strip()) for x in head_re.finditer(md)]
-        sec_marks = [(x.start(), {"选择题": "select", "填空题": "blank"}[x.group(1)]) for x in sec_re.finditer(md)]
+        sec_marks = [(x.start(), {"选择题": "select", "填空题": "blank", "判断题": "judge"}[x.group(1)]) for x in sec_re.finditer(md)]
         sec_marks.append((len(md), None))
 
         # 闪卡（两份速查清单的 checkbox Q 行）
         for x in card_line.finditer(md):
-            cat = ""
-            for pos, name in cmarks:
-                if pos < x.start():
-                    cat = name
-                else:
-                    break
+            if m["path"] in CARD_EXTRA:
+                cat = re.sub(r"^\d+-", "", m["title"])
+            else:
+                cat = ""
+                for pos, name in cmarks:
+                    if pos < x.start():
+                        cat = name
+                    else:
+                        break
             ans = x.group(3)
             refurl, reftitle = "", ""
             m1, m2 = ref_link_re.search(ans), ref_plain_re.search(ans)
@@ -244,7 +260,15 @@ title: 关于本指南
                     refurl, reftitle = "%s/%s/" % (POST_BASE, slug), slug2title.get(slug, "")
                 exp = ref_link_re.sub("", ref_plain_re.sub("", exp)).strip()
                 qid = "q" + hashlib.md5(stem.encode("utf-8")).hexdigest()[:8]
-                if kind == "select":
+                if kind == "judge":
+                    opts = re.findall(r"^-\s*(?:\[)?([A-D])(?:\])?[\.、]\s*(.+)$", rest, re.M)
+                    letter = am.group(1).strip().upper()[:1]
+                    if len(opts) < 2 or letter not in "AB"[:len(opts)]:
+                        print("warn 判断题选项/答案异常:", stem[:30]); continue
+                    quiz.append({"id": qid, "kind": "judge", "cat": cat, "diff": diff,
+                                 "q": stem, "opts": [o[1].strip() for o in opts],
+                                 "a": letter, "exp": exp, "ref": refurl, "refTitle": reftitle})
+                elif kind == "select":
                     opts = re.findall(r"^-\s*(?:\[)?([A-D])(?:\])?[\.、]\s*(.+)$", rest, re.M)
                     letter = am.group(1).strip().upper()[:1]
                     if len(opts) < 2 or letter not in "ABCD"[:len(opts)]:

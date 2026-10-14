@@ -1,9 +1,9 @@
 ---
 title: "06-ZooKeeper与Nacos"
 description: "阶段：中间件篇 ｜ 建议时长：3 天 ｜ 前置：Spring Boot 基础、01-Redis（理解分布式锁）"
-pubDatetime: 2026-08-25T01:00:00
+pubDatetime: 2026-08-24T11:00:00
 tags:
-  - "④ 中间件篇"
+  - "⑤ 中间件篇"
 
 draft: false
 ---

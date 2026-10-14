@@ -1,9 +1,9 @@
 ---
 title: "Spring核心"
 description: "阶段：框架篇 ｜ 建议时长：6 天 ｜ 前置：已完成入门篇/进阶篇"
-pubDatetime: 2026-08-24T04:00:00
+pubDatetime: 2026-08-27T16:00:00
 tags:
-  - "⑤ 框架篇"
+  - "④ 框架篇"
 
 draft: false
 ---

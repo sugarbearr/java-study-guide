@@ -1,9 +1,9 @@
 ---
 title: "05-Elasticsearch"
 description: "阶段：中间件篇 ｜ 建议时长：4 天 ｜ 前置：MySQL 基础（03-数据库篇）、Docker 基础"
-pubDatetime: 2026-08-25T08:00:00
+pubDatetime: 2026-08-24T18:00:00
 tags:
-  - "④ 中间件篇"
+  - "⑤ 中间件篇"
 
 draft: false
 ---
@@ -173,14 +173,25 @@ public class ProductSearchService {
 - 写入时对 text 字段分词，为每个词建倒排；查询"华为手机"→ 分词为"华为/手机" → 查两张倒排表 → 取交集/并集 → 按相关度（BM25）排序；
 - 词条表有序 + 压缩，查找近似 O(logN)，因此海量文档也能毫秒级检索。
 
-### 2. text vs keyword（高频坑）
+### 2. 分词器（analyzer）
+
+面试官想听：中文检索效果一半取决于分词器，且**写入和查询可以用不同的分词器**。
+
+- **standard**（默认）：按 Unicode 切词，中文基本被切成**单字**（"华为手机"→华/为/手/机），搜"手机"能命中但噪声大、相关性差；中文必须换 **IK 插件**。
+- IK 两种模式：`ik_max_word`（最细粒度，"华为手机"→华为/手机/华为手机…，宁可多切）适合**写入**保证召回；`ik_smart`（粗粒度，少而准）适合**查询**。前面 Mapping 里 `analyzer=ik_max_word, search_analyzer=ik_smart` 就是这个搭配。
+- 自定义词典：`IKAnalyzer.cfg.xml` 加 `ext_dict`（新词如"徕卡"不被乱切）+ `ext_stopwords`（停用词如"的/了"）；改词典后热加载或重启，ES 重启不丢。
+- 分词只发生在 `text` 字段上；`keyword` 跳过分词器（见下一节）。
+- 为什么 MySQL LIKE 不行而 ES 行：`LIKE '%手机%'` 前模糊无法走索引只能全表扫，也无法"按匹配程度打分"；ES 靠**倒排索引**直接定位含词的文档，再用 **BM25**（词频高、文档中出现少、字段短 → 分高）给相关度打分排序。
+- 验证工具：`GET /_analyze {"analyzer":"ik_smart","text":"华为手机"}`，调搜索效果先查分词结果。
+
+### 3. text vs keyword（高频坑）
 
 - `text`：写入时**分词**建倒排，用于全文检索（match）；不能直接精确匹配/聚合；
 - `keyword`：**不分词**，整体作为一个词，用于精确匹配（term）、排序、聚合；
 - 经典错误：对 text 字段用 term 查"华为手机"查不到（因为分词后没有"华为手机"这个整体词）；品牌、状态、类别字段必须用 keyword；
 - 一个字段可同时要两个能力：`"fields": {"raw": {"type": "keyword"}}`。
 
-### 3. 写入为什么是"近实时"（NRT）
+### 4. 写入为什么是"近实时"（NRT）
 
 ```
 写入 → Index Buffer(内存) + translog(事务日志,防丢)
@@ -191,13 +202,13 @@ public class ProductSearchService {
 - 所以写入到可搜索**最多有约 1 秒延迟**（`refresh_interval` 可调）；追求实时可设 `refresh_interval=1s` 以下但费性能；
 - segment 一旦生成不可修改：删除只是打标记，更新=删旧+插新，这是 ES 更新代价高的根源。
 
-### 4. 深分页问题
+### 5. 深分页问题
 
 - `from + size`：每个分片都要取 `from + size` 条到协调节点排序，`from` 越大代价越高，默认上限 10000；
 - 深翻页方案：**`search_after` + PIT（Point in Time）**——用上一页最后一条的排序值做游标，性能稳定，适合"下一页"式翻页；`scroll` 适合一次性导出全量（已不推荐做分页）；
 - 产品层面规避：搜索结果只允许翻前 100 页（如 Google）。
 
-### 5. 数据同步方案（MySQL → ES）
+### 6. 数据同步方案（MySQL → ES）
 
 | 方案 | 原理 | 优点 | 缺点 |
 | --- | --- | --- | --- |
@@ -208,7 +219,7 @@ public class ProductSearchService {
 
 生产主流：**MQ 异步同步**或 **canal 订阅 binlog**；要求最终一致再加对账任务。
 
-### 6. 集群
+### 7. 集群
 
 - 主分片数建索引时固定（默认 1），副本可动态调；分片是数据分布与并行的单位；
 - 节点角色：master（管理）、data（存数据）、coordinating（协调，所有节点默认兼任）；

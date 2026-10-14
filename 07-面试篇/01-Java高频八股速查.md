@@ -33,7 +33,7 @@
 - [ ] **Q：注解的原理？** —— @interface 本质是继承 Annotation 的接口，运行期靠反射读取元数据，Retention 决定保留到源码/字节码/运行期 ｜ 详见《../01-入门篇/04-异常-IO-反射-注解.md》
 - [ ] **Q：什么是泛型擦除？** —— 泛型只存在于编译期做类型检查，运行期 List\<String\> 与 List\<Integer\> 都是 List，桥接方法保证多态 ｜ 详见《../01-入门篇/03-集合与泛型.md》
 - [ ] **Q：static 关键字的用法？** —— 静态变量/方法/代码块/内部类都属于类而非实例，静态方法不能访问实例成员，加载时初始化 ｜ 详见《../01-入门篇/01-环境搭建与基础语法.md》
-- [ ] **Q：内部类有哪些？** —— 成员、静态、局部、匿名内部类；匿名内部类访问局部变量要求 effectively final ｜ 详见《../01-入门篇/04-异常-IO-反射-注解.md》
+- [ ] **Q：内部类有哪些？** —— 成员、静态、局部、匿名内部类；匿名内部类访问局部变量要求 effectively final ｜ 详见《../01-入门篇/02-面向对象与核心类.md》
 - [ ] **Q：BigDecimal 为什么能避免精度丢失？** —— 用"无标度整数+标度"精确表示十进制；金额计算必用，除法必须指定舍入模式与精度 ｜ 详见《../01-入门篇/02-面向对象与核心类.md》
 - [ ] **Q：Java 8 有哪些新特性？** —— Lambda、函数式接口、Stream、Optional、接口 default 方法、新时间日期 API ｜ 详见《../01-入门篇/05-Lambda-Stream与Java8新特性.md》
 - [ ] **Q：Stream 常用操作？** —— 中间操作 filter/map/sorted/flatMap 惰性执行，终端操作 collect/reduce/count/forEach 触发计算，只能消费一次 ｜ 详见《../01-入门篇/05-Lambda-Stream与Java8新特性.md》
@@ -56,7 +56,7 @@
 - [ ] **Q：遍历集合时如何安全删除元素？** —— 用 Iterator.remove() 或 removeIf()，不能在 for-each 中直接 list.remove() ｜ 详见《../01-入门篇/03-集合与泛型.md》
 - [ ] **Q：TreeMap 的底层与使用场景？** —— 红黑树实现，key 有序，支持范围查询与首个/最后一个元素，需自然排序或 Comparator ｜ 详见《../01-入门篇/03-集合与泛型.md》
 - [ ] **Q：List/Set/Queue/Map 怎么选型？** —— 有序可重复选 List、去重选 Set、先进先出/优先级选 Queue、键值映射选 Map，再看是否需要排序与并发 ｜ 详见《../01-入门篇/03-集合与泛型.md》
-- [ ] **Q：ArrayList 线程安全吗？怎么解决？** —— 不安全；Vector 已过时，读多写少用 CopyOnWriteArrayList，或 Collections.synchronizedList ｜ 详见《../02-进阶篇/01-多线程与并发编程.md》
+- [ ] **Q：ArrayList 线程安全吗？怎么解决？** —— 不安全；Vector 已过时，读多写少用 CopyOnWriteArrayList，或 Collections.synchronizedList ｜ 详见《../01-入门篇/03-集合与泛型.md》
 - [ ] **Q：Comparable 与 Comparator 的区别？** —— Comparable 在类内部定义自然排序（compareTo），Comparator 外部定制排序规则（compare），后者可多套并存 ｜ 详见《../01-入门篇/03-集合与泛型.md》
 
 ### 并发（20 题）
@@ -108,34 +108,34 @@
 
 > 面试形式：围绕 Bean 生命周期、事务失效、自动配置三条主线追问，常结合项目问"你项目里怎么用的"。
 
-- [ ] **Q：什么是 IoC 和 DI？** —— IoC 把对象创建与依赖管理交给容器（控制反转），DI 是实现手段：构造器/setter/字段注入 ｜ 详见《../05-框架篇/01-Spring核心.md》
-- [ ] **Q：Bean 的生命周期？** —— 实例化 → 属性填充 → Aware 回调 → BeanPostProcessor 前置 → 初始化（@PostConstruct/afterPropertiesSet）→ 后置处理 → 销毁 ｜ 详见《../05-框架篇/01-Spring核心.md》
-- [ ] **Q：三级缓存如何解决循环依赖？** —— 成品池/早期引用池/工厂池三步走，只能解决单例 + setter 注入的循环依赖，构造器依赖无解 ｜ 详见《../05-框架篇/01-Spring核心.md》
-- [ ] **Q：Bean 的作用域？** —— singleton（默认，容器单例）、prototype（每次新建）、request/session 等 Web 作用域 ｜ 详见《../05-框架篇/01-Spring核心.md》
-- [ ] **Q：AOP 的原理？** —— 运行期动态代理织入横切逻辑：目标类有接口走 JDK 动态代理，无接口走 CGLIB 子类代理 ｜ 详见《../05-框架篇/01-Spring核心.md》
-- [ ] **Q：JDK 动态代理与 CGLIB 的区别？** —— JDK 基于接口反射实现代理，CGLIB 生成子类字节码；final 类/方法无法被 CGLIB 代理 ｜ 详见《../05-框架篇/01-Spring核心.md》
-- [ ] **Q：Spring 事务的传播行为？** —— REQUIRED（默认，有事务则加入）、REQUIRES_NEW（挂起当前另开新事务）、NESTED（嵌套保存点）等 7 种 ｜ 详见《../05-框架篇/01-Spring核心.md》
-- [ ] **Q：Spring 事务失效的场景？** —— 自调用（this 绕过代理）、方法非 public、异常被 catch 吞掉、默认只回滚 RuntimeException、引擎不支持事务 ｜ 详见《../05-框架篇/01-Spring核心.md》
-- [ ] **Q：SpringMVC 的执行流程？** —— 请求到 DispatcherServlet → HandlerMapping 找处理器 → HandlerAdapter 调用 Controller → 返回视图渲染 ｜ 详见《../05-框架篇/01-Spring核心.md》
-- [ ] **Q：SpringBoot 自动配置原理？** —— @EnableAutoConfiguration 读取 AutoConfiguration.imports 文件，配合 @ConditionalOnClass 等条件注解按需装配 ｜ 详见《../05-框架篇/02-SpringBoot实战.md》
-- [ ] **Q：starter 是什么？** —— 依赖聚合 + 自动配置的封装，引入即用；自定义 starter = 自动配置模块 + starter 空壳依赖 ｜ 详见《../05-框架篇/02-SpringBoot实战.md》
-- [ ] **Q：@Autowired 和 @Resource 的区别？** —— @Autowired 是 Spring 的，先按类型后按名称；@Resource 是 JSR-250 的，先按名称后按类型 ｜ 详见《../05-框架篇/02-SpringBoot实战.md》
-- [ ] **Q：@ConfigurationProperties 与 @Value 怎么选？** —— 前者批量绑定前缀配置、类型安全、支持校验；后者适合单个值，支持 SpEL ｜ 详见《../05-框架篇/02-SpringBoot实战.md》
-- [ ] **Q：@Configuration 与 @Component 的区别？** —— @Configuration 类被 CGLIB 代理，@Bean 方法互调仍走容器保证单例；@Component 下互调会 new 新对象 ｜ 详见《../05-框架篇/01-Spring核心.md》
-- [ ] **Q：BeanFactory 和 FactoryBean 的区别？** —— BeanFactory 是容器顶层接口；FactoryBean 是"生产 Bean 的 Bean"，用于封装复杂对象的构建（如 SqlSessionFactoryBean）｜ 详见《../05-框架篇/01-Spring核心.md》
+- [ ] **Q：什么是 IoC 和 DI？** —— IoC 把对象创建与依赖管理交给容器（控制反转），DI 是实现手段：构造器/setter/字段注入 ｜ 详见《../04-框架篇/01-Spring核心.md》
+- [ ] **Q：Bean 的生命周期？** —— 实例化 → 属性填充 → Aware 回调 → BeanPostProcessor 前置 → 初始化（@PostConstruct/afterPropertiesSet）→ 后置处理 → 销毁 ｜ 详见《../04-框架篇/01-Spring核心.md》
+- [ ] **Q：三级缓存如何解决循环依赖？** —— 成品池/早期引用池/工厂池三步走，只能解决单例 + setter 注入的循环依赖，构造器依赖无解 ｜ 详见《../04-框架篇/01-Spring核心.md》
+- [ ] **Q：Bean 的作用域？** —— singleton（默认，容器单例）、prototype（每次新建）、request/session 等 Web 作用域 ｜ 详见《../04-框架篇/01-Spring核心.md》
+- [ ] **Q：AOP 的原理？** —— 运行期动态代理织入横切逻辑：目标类有接口走 JDK 动态代理，无接口走 CGLIB 子类代理 ｜ 详见《../04-框架篇/01-Spring核心.md》
+- [ ] **Q：JDK 动态代理与 CGLIB 的区别？** —— JDK 基于接口反射实现代理，CGLIB 生成子类字节码；final 类/方法无法被 CGLIB 代理 ｜ 详见《../04-框架篇/01-Spring核心.md》
+- [ ] **Q：Spring 事务的传播行为？** —— REQUIRED（默认，有事务则加入）、REQUIRES_NEW（挂起当前另开新事务）、NESTED（嵌套保存点）等 7 种 ｜ 详见《../04-框架篇/01-Spring核心.md》
+- [ ] **Q：Spring 事务失效的场景？** —— 自调用（this 绕过代理）、方法非 public、异常被 catch 吞掉、默认只回滚 RuntimeException、引擎不支持事务 ｜ 详见《../04-框架篇/01-Spring核心.md》
+- [ ] **Q：SpringMVC 的执行流程？** —— 请求到 DispatcherServlet → HandlerMapping 找处理器 → HandlerAdapter 调用 Controller → 返回视图渲染 ｜ 详见《../04-框架篇/01-Spring核心.md》
+- [ ] **Q：SpringBoot 自动配置原理？** —— @EnableAutoConfiguration 读取 AutoConfiguration.imports 文件，配合 @ConditionalOnClass 等条件注解按需装配 ｜ 详见《../04-框架篇/02-SpringBoot实战.md》
+- [ ] **Q：starter 是什么？** —— 依赖聚合 + 自动配置的封装，引入即用；自定义 starter = 自动配置模块 + starter 空壳依赖 ｜ 详见《../04-框架篇/02-SpringBoot实战.md》
+- [ ] **Q：@Autowired 和 @Resource 的区别？** —— @Autowired 是 Spring 的，先按类型后按名称；@Resource 是 JSR-250 的，先按名称后按类型 ｜ 详见《../04-框架篇/02-SpringBoot实战.md》
+- [ ] **Q：@ConfigurationProperties 与 @Value 怎么选？** —— 前者批量绑定前缀配置、类型安全、支持校验；后者适合单个值，支持 SpEL ｜ 详见《../04-框架篇/02-SpringBoot实战.md》
+- [ ] **Q：@Configuration 与 @Component 的区别？** —— @Configuration 类被 CGLIB 代理，@Bean 方法互调仍走容器保证单例；@Component 下互调会 new 新对象 ｜ 详见《../04-框架篇/01-Spring核心.md》
+- [ ] **Q：BeanFactory 和 FactoryBean 的区别？** —— BeanFactory 是容器顶层接口；FactoryBean 是"生产 Bean 的 Bean"，用于封装复杂对象的构建（如 SqlSessionFactoryBean）｜ 详见《../04-框架篇/01-Spring核心.md》
 
 ### MyBatis（8 题）
 
 > 面试形式：题量少但 #{} vs ${} 与 Mapper 动态代理几乎必问，答好后会转向 MyBatis-Plus 与分页等使用细节。
 
-- [ ] **Q：#{} 和 ${} 的区别？** —— #{} 是预编译占位符防 SQL 注入；${} 是字符串拼接，只用于动态表名/列名等受控场景 ｜ 详见《../05-框架篇/03-MyBatis.md》
-- [ ] **Q：一级缓存与二级缓存？** —— 一级是 SqlSession 级默认开启；二级是 namespace 级需手动开启，跨会话共享，分布式下易脏读生产慎用 ｜ 详见《../05-框架篇/03-MyBatis.md》
-- [ ] **Q：Mapper 接口没有实现类为什么能执行 SQL？** —— JDK 动态代理 MapperProxy 拦截方法调用，接口全限定名+方法名映射到 XML 的 statement id ｜ 详见《../05-框架篇/03-MyBatis.md》
-- [ ] **Q：常用动态 SQL 标签？** —— if/where/choose/when/otherwise/set/foreach/trim，用于条件拼接与批量插入 ｜ 详见《../05-框架篇/03-MyBatis.md》
-- [ ] **Q：resultMap 什么时候用？** —— 列名与属性名不一致、一对一/一对多关联映射、自定义类型转换时使用 ｜ 详见《../05-框架篇/03-MyBatis.md》
-- [ ] **Q：MyBatis 的分页方案？** —— RowBounds 是内存逻辑分页（全查再截取，有 OOM 风险）；生产用 PageHelper 物理分页（改写 SQL 加 LIMIT）｜ 详见《../05-框架篇/03-MyBatis.md》
-- [ ] **Q：MyBatis-Plus 有哪些特性？** —— BaseMapper 通用 CRUD、Wrapper 条件构造器、分页/乐观锁插件、自动填充、代码生成器 ｜ 详见《../05-框架篇/03-MyBatis.md》
-- [ ] **Q：MyBatis 和 JPA 怎么选？** —— SQL 需要精细控制、复杂查询多选 MyBatis（国内主流）；标准 CRUD 快速开发选 JPA/Hibernate ｜ 详见《../05-框架篇/03-MyBatis.md》
+- [ ] **Q：#{} 和 ${} 的区别？** —— #{} 是预编译占位符防 SQL 注入；${} 是字符串拼接，只用于动态表名/列名等受控场景 ｜ 详见《../04-框架篇/03-MyBatis.md》
+- [ ] **Q：一级缓存与二级缓存？** —— 一级是 SqlSession 级默认开启；二级是 namespace 级需手动开启，跨会话共享，分布式下易脏读生产慎用 ｜ 详见《../04-框架篇/03-MyBatis.md》
+- [ ] **Q：Mapper 接口没有实现类为什么能执行 SQL？** —— JDK 动态代理 MapperProxy 拦截方法调用，接口全限定名+方法名映射到 XML 的 statement id ｜ 详见《../04-框架篇/03-MyBatis.md》
+- [ ] **Q：常用动态 SQL 标签？** —— if/where/choose/when/otherwise/set/foreach/trim，用于条件拼接与批量插入 ｜ 详见《../04-框架篇/03-MyBatis.md》
+- [ ] **Q：resultMap 什么时候用？** —— 列名与属性名不一致、一对一/一对多关联映射、自定义类型转换时使用 ｜ 详见《../04-框架篇/03-MyBatis.md》
+- [ ] **Q：MyBatis 的分页方案？** —— RowBounds 是内存逻辑分页（全查再截取，有 OOM 风险）；生产用 PageHelper 物理分页（改写 SQL 加 LIMIT）｜ 详见《../04-框架篇/03-MyBatis.md》
+- [ ] **Q：MyBatis-Plus 有哪些特性？** —— BaseMapper 通用 CRUD、Wrapper 条件构造器、分页/乐观锁插件、自动填充、代码生成器 ｜ 详见《../04-框架篇/03-MyBatis.md》
+- [ ] **Q：MyBatis 和 JPA 怎么选？** —— SQL 需要精细控制、复杂查询多选 MyBatis（国内主流）；标准 CRUD 快速开发选 JPA/Hibernate ｜ 详见《../04-框架篇/03-MyBatis.md》
 
 ## 🔗 深入学习资料
 

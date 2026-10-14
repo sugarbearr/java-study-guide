@@ -46,7 +46,14 @@ draft: false
 - [ ] Stream 分组/过滤/汇总一套连招
 - [ ] map vs flatMap 讲得清
 - [ ] Optional 正确用法
-- [ ] Java 8→21 版本脉络一句话各自说得出
+- [ ] Java 8→25 版本脉络一句话各自说得出
+
+### [07-设计模式](/java-study-guide/posts/07-设计模式/)
+- [ ] SOLID 五原则各举一个 Java 例子
+- [ ] 手写双重检查锁单例并解释 volatile
+- [ ] JDK 动态代理 vs CGLIB 适用条件讲得清
+- [ ] Spring 里的设计模式对照表能背 6 行
+- [ ] 用策略模式重构一段 if-else（有代码）
 
 ## ② 进阶篇
 
@@ -74,6 +81,14 @@ draft: false
 - [ ] BIO/NIO/AIO 区别与 NIO 三大件
 - [ ] 零拷贝是什么
 - [ ] Netty 为什么快
+- [ ] Cookie/Session/JWT 三者关系与选型
+
+### [04-开发工具链](/java-study-guide/posts/04-开发工具链-Git-Maven-Linux/)
+- [ ] Git：制造并解决一次冲突；说清 merge vs rebase 与禁忌
+- [ ] Git：reset --soft/mixed/hard 三者区别实际用过
+- [ ] Maven：dependency:tree 排查一次依赖冲突并排除
+- [ ] Linux：ps/top -Hp/jstack 排查链能盲打
+- [ ] Linux：awk 统计 access.log Top10 IP 写过
 
 ## ③ 数据库篇
 
@@ -122,6 +137,19 @@ draft: false
 - [ ] OpenFeign 声明式调用与超时
 - [ ] Gateway 路由与全局过滤器
 - [ ] Sentinel 限流熔断配置过
+
+### [05-单元测试与工程质量](/java-study-guide/posts/05-单元测试与工程质量/)
+- [ ] @SpringBootTest vs @WebMvcTest 适用场景说得清
+- [ ] Mockito when/verify 给 Service 写过测试
+- [ ] todo-list 核心 Service 有 3 个以上单测且 CI 能跑
+- [ ] 日志规范（SLF4J 门面、占位符、级别选择）落在项目里
+
+### [06-认证与安全](/java-study-guide/posts/06-认证与安全/)
+- [ ] JWT 三段结构与验签流程画得出来
+- [ ] 密码存储用 BCrypt，能解释为什么不用 MD5
+- [ ] XSS/CSRF/SQL 注入三者防御不混淆
+- [ ] todo-list 登录发 token + 拦截器校验跑通
+- [ ] RBAC 四表设计写过
 
 ## ⑤ 中间件篇
 
@@ -201,6 +229,13 @@ draft: false
 - [ ] 秒杀系统全链路（含防超卖）
 - [ ] Redis+Lua 限流器写过
 
+### [03-系统设计场景题](/java-study-guide/posts/03-系统设计场景题/)
+- [ ] 答题框架（澄清→估算→存储→链路→难点）能背
+- [ ] 短链系统能讲 5 分钟（301 vs 302、Base62、发号器）
+- [ ] 布隆过滤器容量/误差公式与「不能删」讲得清
+- [ ] 订单超时关闭四方案对比选型说得出口
+- [ ] 排行榜 ZSET 同分处理 + Feed 推拉结合各能讲一遍
+
 ## ⑦ 面试篇
 
 ### [01-Java高频八股速查](/java-study-guide/posts/01-Java高频八股速查/)
@@ -233,10 +268,15 @@ draft: false
 - [ ] 完成 3 次模拟面试（自录/朋友/AI）
 
 ### [05-选择填空题库](/java-study-guide/posts/05-选择填空题库/)
-- [ ] 48 道选择题全部做过（应用「📝 选择填空练习」）
-- [ ] 20 道填空题全部做过
+- [ ] 97 道选择题全部做过（应用「📝 选择填空练习」）
+- [ ] 32 道填空题 + 12 道判断题全部做过
 - [ ] 最近一轮全部答对（🔁 只做错题时池为空）
 - [ ] 累计正确率 ≥ 90%
+
+### [06-考点详略表](/java-study-guide/posts/06-考点详略表/)
+- [ ] 通读一遍，确认 🔴/🟡/🟢 三档划分与自己的薄弱项一致
+- [ ] 按「最小可行知识面」清单排出自己冲刺期的前 6 项
+- [ ] 每 2 周对照一次，动态调整精力分配
 
 ---
 

@@ -16,35 +16,40 @@ STAGES = [
         "01-入门篇/03-集合与泛型.md",
         "01-入门篇/04-异常-IO-反射-注解.md",
         "01-入门篇/05-Lambda-Stream与Java8新特性.md",
+        "01-入门篇/07-设计模式.md",
     ]),
     ("② 进阶篇", "⚙️", [
         "02-进阶篇/01-多线程与并发编程.md",
         "02-进阶篇/02-JVM核心.md",
         "02-进阶篇/03-IO模型与网络编程.md",
+        "02-进阶篇/04-开发工具链-Git-Maven-Linux.md",
     ]),
     ("③ 数据库篇", "🗄️", [
         "03-数据库篇/01-MySQL基础与SQL实战.md",
         "03-数据库篇/02-索引-事务-锁与调优.md",
     ]),
-    ("④ 中间件篇", "🧩", [
-        "04-中间件篇/01-Redis.md",
-        "04-中间件篇/02-RabbitMQ.md",
-        "04-中间件篇/03-Kafka.md",
-        "04-中间件篇/04-RocketMQ.md",
-        "04-中间件篇/05-Elasticsearch.md",
-        "04-中间件篇/06-ZooKeeper与Nacos.md",
-        "04-中间件篇/07-Nginx.md",
-        "04-中间件篇/08-MongoDB.md",
+    ("④ 框架篇", "🏗️", [
+        "04-框架篇/01-Spring核心.md",
+        "04-框架篇/02-SpringBoot实战.md",
+        "04-框架篇/03-MyBatis.md",
+        "04-框架篇/04-SpringCloud微服务.md",
+        "04-框架篇/05-单元测试与工程质量.md",
+        "04-框架篇/06-认证与安全.md",
     ]),
-    ("⑤ 框架篇", "🏗️", [
-        "05-框架篇/01-Spring核心.md",
-        "05-框架篇/02-SpringBoot实战.md",
-        "05-框架篇/03-MyBatis.md",
-        "05-框架篇/04-SpringCloud微服务.md",
+    ("⑤ 中间件篇", "🧩", [
+        "05-中间件篇/01-Redis.md",
+        "05-中间件篇/02-RabbitMQ.md",
+        "05-中间件篇/03-Kafka.md",
+        "05-中间件篇/04-RocketMQ.md",
+        "05-中间件篇/05-Elasticsearch.md",
+        "05-中间件篇/06-ZooKeeper与Nacos.md",
+        "05-中间件篇/07-Nginx.md",
+        "05-中间件篇/08-MongoDB.md",
     ]),
     ("⑥ 分布式与高并发篇", "🌐", [
         "06-分布式与高并发篇/01-分布式理论基础.md",
         "06-分布式与高并发篇/02-高并发系统设计.md",
+        "06-分布式与高并发篇/03-系统设计场景题.md",
     ]),
     ("⑦ 面试篇", "🎯", [
         "07-面试篇/01-Java高频八股速查.md",
@@ -53,8 +58,17 @@ STAGES = [
         "07-面试篇/04-简历与求职指南.md",
         "07-面试篇/05-选择填空题库.md",
         "07-面试篇/06-考点详略表.md",
+        "07-面试篇/07-术语速查表.md",
     ]),
 ]
+
+CARD_EXTRA = {
+    "01-入门篇/07-设计模式.md",
+    "02-进阶篇/04-开发工具链-Git-Maven-Linux.md",
+    "04-框架篇/05-单元测试与工程质量.md",
+    "04-框架篇/06-认证与安全.md",
+    "06-分布式与高并发篇/03-系统设计场景题.md",
+}
 
 def title_of(md_text, fallback):
     m = re.search(r'^#\s+(.+?)\s*$', md_text, re.M)
@@ -113,18 +127,21 @@ def main():
     ref_link_re = re.compile(r"｜\s*详见\s*\[《[^》]+》\]\(#/f/(f\d+)\)\s*$")
     head_re = re.compile(r"^###\s+(.+?)\s*$", re.M)
     for f in files:
-        if "速查" not in f["title"]:
+        if "速查" not in f["title"] and f["path"] not in CARD_EXTRA:
             continue
         # 用标题位置切分板块
         marks = [(m.start(), re.sub(r"（\d+\s*题）", "", m.group(1)).strip())
                  for m in head_re.finditer(f["md"])]
         for m in card_line.finditer(f["md"]):
-            cat = ""
-            for pos, name in marks:
-                if pos < m.start():
-                    cat = name
-                else:
-                    break
+            if f["path"] in CARD_EXTRA:
+                cat = re.sub(r"^\d+-", "", f["title"])
+            else:
+                cat = ""
+                for pos, name in marks:
+                    if pos < m.start():
+                        cat = name
+                    else:
+                        break
             ans = m.group(3)
             refid, reftitle = "", ""
             rm = ref_link_re.search(ans) or ref_re.search(ans)
@@ -148,10 +165,10 @@ def main():
     # ---------- 选择/填空题库提取 ----------
     import hashlib
     quiz = []
-    quiz_file = next((f for f in files if f["path"].endswith("选择填空题库.md")), None)
+    quiz_file = next((f for f in files if f["path"].endswith("填空题库.md")), None)
     if quiz_file:
-        qsec_re = re.compile(r"^##\s+(选择题|填空题)\s*$", re.M)
-        marks = [(m.start(), {"选择题": "select", "填空题": "blank"}[m.group(1)])
+        qsec_re = re.compile(r"^##\s+(选择题|填空题|判断题)\s*$", re.M)
+        marks = [(m.start(), {"选择题": "select", "填空题": "blank", "判断题": "judge"}[m.group(1)])
                  for m in qsec_re.finditer(quiz_file["md"])]
         marks.append((len(quiz_file["md"]), None))
         for (start, kind), (end, _) in zip(marks, marks[1:]):
@@ -172,7 +189,16 @@ def main():
                 if rm:
                     refid = rm.group(1)
                 qid = "q" + hashlib.md5(stem.encode("utf-8")).hexdigest()[:8]
-                if kind == "select":
+                if kind == "judge":
+                    opts = re.findall(r"^-\s*(?:\[)?([A-D])(?:\])?[\.、]\s*(.+)$", rest, re.M)
+                    letter = am.group(1).strip().upper()[:1]
+                    if len(opts) < 2 or letter not in "AB"[:len(opts)]:
+                        print("warn: 判断题选项/答案异常:", stem[:30])
+                        continue
+                    quiz.append({"id": qid, "kind": "judge", "cat": cat, "diff": diff,
+                                 "q": stem, "opts": [o[1].strip() for o in opts],
+                                 "a": letter, "exp": exp, "ref": refid})
+                elif kind == "select":
                     opts = re.findall(r"^-\s*(?:\[)?([A-D])(?:\])?[\.、]\s*(.+)$", rest, re.M)
                     letter = am.group(1).strip().upper()[:1]
                     if len(opts) < 2 or letter not in "ABCD"[:len(opts)]:
@@ -816,6 +842,7 @@ function renderQuiz() {
   let chips = '<div class="chips"><span class="chip ' + (s.kind === 'all' ? 'on' : '') + '" onclick="quizFilter({kind:\'all\'})">全部题型</span>'
     + '<span class="chip ' + (s.kind === 'select' ? 'on' : '') + '" onclick="quizFilter({kind:\'select\'})">仅选择题</span>'
     + '<span class="chip ' + (s.kind === 'blank' ? 'on' : '') + '" onclick="quizFilter({kind:\'blank\'})">仅填空题</span>'
+    + '<span class="chip ' + (s.kind === 'judge' ? 'on' : '') + '" onclick="quizFilter({kind:\'judge\'})">仅判断题</span>'
     + '<span class="chip ' + (s.shuffled ? 'on' : '') + '" onclick="quizFilter({shuffled:!quizSession.shuffled})">🎲 乱序</span>'
     + '<span class="chip ' + (s.onlyWrong ? 'on' : '') + '" style="margin-left:auto" onclick="quizFilter({onlyWrong:!quizSession.onlyWrong})">🔁 只做错题</span></div>'
     + '<div class="chips"><span class="chip ' + (s.cat === 'all' ? 'on' : '') + '" onclick="quizFilter({cat:\'all\'})">全部板块</span>'
@@ -832,7 +859,7 @@ function renderQuiz() {
   } else {
     const q = s.pool[s.i];
     const head = '<div class="cat">' + esc(q.cat) + ' · ' + esc(q.diff) + ' · 第 ' + (s.i + 1) + ' / ' + s.pool.length + ' 题（本轮答对 ' + s.round.right + '/' + s.round.done + '）</div>';
-    if (q.kind === 'select') {
+    if (q.kind === 'select' || q.kind === 'judge') {
       const aIdx = 'ABCD'.indexOf(q.a);
       const opts = q.opts.map((o, k) => {
         let cls = 'qopt';

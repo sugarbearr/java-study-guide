@@ -1,7 +1,7 @@
 ---
 title: "MySQL基础与SQL实战"
 description: "阶段：数据库篇 ｜ 建议时长：6 天 ｜ 前置：无"
-pubDatetime: 2026-08-27T02:00:00
+pubDatetime: 2026-08-28T06:00:00
 tags:
   - "③ 数据库篇"
 
@@ -141,6 +141,65 @@ FROM score;
 分页：`LIMIT offset, size`，第 1 页 `LIMIT 0,10`、第 2 页 `LIMIT 10,10`；offset 越大越慢（深分页问题，下一篇详讲）。去重：`SELECT DISTINCT course_id FROM score;`。
 
 COUNT 三兄弟：`COUNT(*)`（InnoDB 有专门优化，推荐）、`COUNT(1)`（与 * 等价）、`COUNT(col)`（不统计该列为 NULL 的行，语义不同）。
+
+### 建表实战与设计要点
+
+**一张「像生产环境」的建表 SQL**（学生/课程/选课三表，学生选课库即此结构）：
+
+```sql
+CREATE TABLE student (
+  id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+  name       VARCHAR(20)     NOT NULL COMMENT '姓名',
+  id_card    CHAR(18)        NOT NULL COMMENT '身份证，定长用 CHAR',
+  gender     TINYINT         NOT NULL DEFAULT 1 COMMENT '1男 0女',
+  birthday   DATE            DEFAULT NULL,
+  created_at DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_id_card (id_card)          -- 业务唯一键
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='学生表';
+
+CREATE TABLE course (
+  id   BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30)     NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_name (name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE score (  -- 选课/成绩：多对多中间表
+  id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  student_id BIGINT UNSIGNED NOT NULL,
+  course_id  BIGINT UNSIGNED NOT NULL,
+  value      DECIMAL(5,1)    NOT NULL DEFAULT 0 COMMENT '成绩，小数用 DECIMAL 不用 FLOAT',
+  PRIMARY KEY (id),
+  UNIQUE KEY uk_student_course (student_id, course_id),  -- 一人一课一条
+  KEY idx_course (course_id)                              -- 外键列建普通索引
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+- 要点逐条：主键用 `BIGINT AUTO_INCREMENT`；定长（身份证/MD5）用 CHAR、变长用 VARCHAR；金额/成绩用 DECIMAL；时间用 DATETIME；`utf8mb4` 才存得了 emoji，排序规则全库统一；`NOT NULL + DEFAULT`，可空就写 `DEFAULT NULL`。教学演示可加 `FOREIGN KEY (student_id) REFERENCES student(id)`，**生产不建物理外键**（见上文约束小节）。
+
+**设计要点一句话清单**：每张表「自增 bigint 主键 + 业务唯一键」双保险；不用外键约束，靠应用层保证（分库分表后外键更没法用）；**适度冗余**换掉高频 join（如订单表冗余商品名）；时间统一 DATETIME、金额统一 DECIMAL；必备 `created_at/updated_at` 两列。
+
+**高价值 SQL 面试题补充**（配合 10 道练习，这几道是「面试原题级」）：
+
+- **行转列**：成绩表转成「每人一行、各科一列」——`CASE WHEN + GROUP BY + MAX`：
+
+```sql
+SELECT s.name,
+  MAX(CASE WHEN c.name='语文' THEN sc.value END) AS chinese,
+  MAX(CASE WHEN c.name='数学' THEN sc.value END) AS math,
+  MAX(CASE WHEN c.name='英语' THEN sc.value END) AS english
+FROM score sc
+JOIN student s ON s.id=sc.student_id
+JOIN course  c ON c.id=sc.course_id
+GROUP BY s.name;
+```
+
+- **分组内 Top N**（每科前 2 名）：MySQL 8 窗口函数一行搞定 `ROW_NUMBER()/RANK() OVER (PARTITION BY course_id ORDER BY value DESC)` 放进子查询取 rn<=2（并列用 RANK，不并列才用 ROW_NUMBER）；MySQL 5.7 没有窗口函数，思路是**自连接计数**：`JOIN score t2 ON t2.course_id=t.course_id AND t2.value>t.value` 后 `HAVING COUNT(*) < 2`，或用户变量模拟行号。
+- **连续 N 天出现**（如连续 3 天打卡/登录）：经典「日期减行号」——按人按天排序后 `date - INTERVAL ROW_NUMBER() DAY` 得到分组键 `grp`，连续日期段内 grp 相同，再 `GROUP BY 人, grp HAVING COUNT(*) >= 3`。
+- **第 N 高的分数**：`DENSE_RANK() OVER (ORDER BY value DESC)` 取 =N（去重排名，DENSE_RANK 并列不跳号，RANK 跳号）；不用窗口则 `SELECT DISTINCT value FROM score ORDER BY value DESC LIMIT N-1,1`。
+- 口径：**排名类题目先想窗口函数，老版本再退化到自连接/变量**；行转列永远是 CASE WHEN + 聚合。
 
 ### 6. 从 JDBC 到 ORM（衔接框架篇）
 

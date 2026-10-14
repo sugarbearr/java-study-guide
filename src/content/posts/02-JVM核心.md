@@ -1,7 +1,7 @@
 ---
 title: "02-JVM核心"
 description: "阶段：进阶篇 ｜ 建议时长：5 天 ｜ 前置：建议先学 01-多线程与并发编程.md"
-pubDatetime: 2026-08-27T16:00:00
+pubDatetime: 2026-08-29T03:00:00
 tags:
   - "② 进阶篇"
 

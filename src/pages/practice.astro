@@ -579,15 +579,16 @@ const payload = JSON.stringify(rawData).replace(/<\//g, "<\\/");
   function renderQuiz() {
     const qs = DATA.quiz;
     if (!quizSession)
-      quizSession = { cat: "all", kind: "all", file: "all", onlyWrong: false, shuffled: false, i: 0, pool: [], revealed: false, sel: -1, vals: [], round: { done: 0, right: 0 } };
+      quizSession = { cat: "all", kind: "all", diff: "all", file: "all", onlyWrong: false, shuffled: false, i: 0, pool: [], revealed: false, sel: -1, vals: [], round: { done: 0, right: 0 } };
     const s = quizSession;
     if ((window as any).__pgCat) { s.cat = (window as any).__pgCat; (window as any).__pgCat = null; s.sig = null; }
     const pool = qs.filter((q: any) =>
       (s.cat === "all" || q.cat === s.cat) &&
-      (s.kind === "all" || q.kind === s.kind) &&
+      (s.kind === "all" || (s.kind === "judge" ? q.kind === "judge" : q.kind === s.kind)) &&
+      (s.diff === "all" || q.diff === s.diff) &&
       (s.file === "all" || q.ref === s.file) &&
       (!s.onlyWrong || (store.quiz[q.id] || {}).last === "wrong"));
-    const sig = [s.cat, s.kind, s.file, s.onlyWrong, s.shuffled].join("|");
+    const sig = [s.cat, s.kind, s.diff, s.file, s.onlyWrong, s.shuffled].join("|");
     if (s.sig !== sig || !s.pool) {
       s.sig = sig;
       s.pool = s.shuffled ? shuffledArr(pool) : pool;
@@ -608,7 +609,11 @@ const payload = JSON.stringify(rawData).replace(/<\//g, "<\\/");
       <span class="pg-chip ${s.kind === "all" ? "on" : ""}" onclick="window.__pgCards2({kind:'all'})">全部题型</span>
       <span class="pg-chip ${s.kind === "select" ? "on" : ""}" onclick="window.__pgCards2({kind:'select'})">仅选择题</span>
       <span class="pg-chip ${s.kind === "blank" ? "on" : ""}" onclick="window.__pgCards2({kind:'blank'})">仅填空题</span>
+      <span class="pg-chip ${s.kind === "judge" ? "on" : ""}" onclick="window.__pgCards2({kind:'judge'})">仅判断题</span>
       <span class="pg-chip ${s.shuffled ? "on" : ""}" onclick="window.__pgCards2({shuffled:!quizSession.shuffled})">乱序</span>
+      <span class="pg-chip" style="margin-left:0.4rem;font-size:0.72rem;opacity:0.55">难度：</span>
+      <span class="pg-chip ${s.diff === "all" ? "on" : ""}" onclick="window.__pgCards2({diff:'all'})">全部</span>
+      ${["易", "中", "难"].filter(d => qs.some((q: any) => q.diff === d)).map(d => `<span class="pg-chip ${s.diff === d ? "on" : ""}" onclick="window.__pgCards2({diff:'${d}'})">${d}</span>`).join("")}
       <span class="pg-chip ${s.onlyWrong ? "on" : ""}" style="margin-left:auto" onclick="window.__pgCards2({onlyWrong:!quizSession.onlyWrong})">只做错题</span></div>
       <div class="pg-chips"><span class="pg-chip ${s.cat === "all" ? "on" : ""}" onclick="window.__pgCards2({cat:'all'})">全部板块</span>
       ${cats.map((c: any) => `<span class="pg-chip ${s.cat === c ? "on" : ""}" onclick="window.__pgCards2({cat:'${esc(String(c))}'})">${esc(String(c))}</span>`).join("")}</div>`;
@@ -620,7 +625,7 @@ const payload = JSON.stringify(rawData).replace(/<\//g, "<\\/");
     } else {
       const q = s.pool[s.i];
       const head = `<div class="pg-muted" style="margin-bottom:0.5rem">${esc(q.cat)} · ${esc(q.diff)} · 第 ${s.i + 1} / ${s.pool.length} 题（本轮答对 ${s.round.right}/${s.round.done}）</div>`;
-      if (q.kind === "select") {
+      if (q.kind === "select" || q.kind === "judge") {
         const aIdx = "ABCD".indexOf(q.a);
         body = `<div class="pg-panel">${head}<div class="pg-q">${inline(esc(q.q))}</div><div style="margin-top:0.9rem">`
           + q.opts.map((o: string, k: number) => {
@@ -691,7 +696,7 @@ const payload = JSON.stringify(rawData).replace(/<\//g, "<\\/");
     let md = "# 错题本（" + new Date().toLocaleDateString() + "，共 " + wrong.length + " 题）\n\n";
     wrong.forEach((q: any) => {
       md += "## [" + q.cat + "·" + q.diff + "] " + q.q + "\n";
-      if (q.kind === "select") { q.opts.forEach((o: string, k: number) => md += "- " + "ABCD"[k] + ". " + o + "\n"); md += "\n正确答案：" + q.a + "\n"; }
+      if (q.kind === "select" || q.kind === "judge") { q.opts.forEach((o: string, k: number) => md += "- " + "ABCD"[k] + ". " + o + "\n"); md += "\n正确答案：" + q.a + "\n"; }
       else md += "\n正确答案：" + q.alts.map((a: string[]) => a.join("／")).join("；") + "\n";
       md += "解析：" + q.exp.replace(/\[《([^》]+)》\]\([^)]+\)/g, "《$1》") + "\n\n";
     });
@@ -731,7 +736,7 @@ const payload = JSON.stringify(rawData).replace(/<\//g, "<\\/");
         return `<div class="pg-dot${has ? " answered" : ""}${k === s.i ? " cur" : ""}" onclick="window.__pgExamGo(${k})">${k + 1}</div>`;
       }).join("");
       let body: string;
-      if (q.kind === "select") {
+      if (q.kind === "select" || q.kind === "judge") {
         const sel = s.answers[q.id];
         body = `<div class="pg-q">${inline(esc(q.q))}</div><div style="margin-top:0.9rem">`
           + q.opts.map((o: string, k: number) =>
@@ -759,7 +764,7 @@ const payload = JSON.stringify(rawData).replace(/<\//g, "<\\/");
       const ok = s.result[q.id];
       return `<div class="pg-res${ok ? "" : " bad"}"><b>${ok ? "✓" : "✗"} 第 ${k + 1} 题（${esc(q.cat)}·${esc(q.diff)}）</b>
         <div style="margin:0.25rem 0">${inline(esc(q.q))}</div>
-        ${q.kind === "select"
+        ${q.kind === "select" || q.kind === "judge"
           ? `<div class="pg-muted">你的答案：${esc(String(s.answers[q.id] || "未作答"))} · 正确答案：${esc(q.a)}</div>`
           : `<div class="pg-muted">正确答案：${esc(q.alts.map((a: string[]) => a.join("／")).join("；"))}</div>`}
         <div class="pg-exp">${inline(esc(q.exp))}</div>
@@ -822,7 +827,7 @@ const payload = JSON.stringify(rawData).replace(/<\//g, "<\\/");
     s.phase = "done";
     s.order.forEach((q: any) => {
       let ok = false;
-      if (q.kind === "select") {
+      if (q.kind === "select" || q.kind === "judge") {
         ok = s.answers[q.id] === q.a;
       } else {
         const n = q.q.split(/＿{2,}/).length - 1;
@@ -895,11 +900,11 @@ const payload = JSON.stringify(rawData).replace(/<\//g, "<\\/");
       else if (e.key === "2" && cardSession.revealed) w.__pgGrade("review");
     } else if (cur === "quiz" && quizSession && quizSession.pool && quizSession.i < quizSession.pool.length) {
       const q = quizSession.pool[quizSession.i];
-      if (!quizSession.revealed && q.kind === "select" && /^[1-4]$/.test(e.key)) { e.preventDefault(); w.__pgPick(+e.key - 1); }
+      if (!quizSession.revealed && (q.kind === "select" || q.kind === "judge") && /^[1-4]$/.test(e.key)) { e.preventDefault(); w.__pgPick(+e.key - 1); }
       else if (quizSession.revealed && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); w.__pgNext(); }
     } else if (cur === "exam" && examSession && examSession.phase === "run") {
       const q = examSession.order[examSession.i];
-      if (q.kind === "select" && /^[1-4]$/.test(e.key)) { e.preventDefault(); w.__pgExamPick(+e.key - 1); }
+      if ((q.kind === "select" || q.kind === "judge") && /^[1-4]$/.test(e.key)) { e.preventDefault(); w.__pgExamPick(+e.key - 1); }
       else if (e.key === "ArrowRight") { e.preventDefault(); w.__pgExamGo(examSession.i + 1); }
       else if (e.key === "ArrowLeft") { e.preventDefault(); w.__pgExamGo(examSession.i - 1); }
       else if (e.key === "e" || e.key === "E") { e.preventDefault(); submitExam(); }

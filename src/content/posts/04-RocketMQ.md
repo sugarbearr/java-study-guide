@@ -1,9 +1,9 @@
 ---
 title: "04-RocketMQ"
 description: "阶段：中间件篇 ｜ 建议时长：3 天 ｜ 前置：02-RabbitMQ、03-Kafka（理解消息队列与分区概念）"
-pubDatetime: 2026-08-25T15:00:00
+pubDatetime: 2026-08-25T01:00:00
 tags:
-  - "④ 中间件篇"
+  - "⑤ 中间件篇"
 
 draft: false
 ---

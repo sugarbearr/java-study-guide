@@ -1,9 +1,9 @@
 ---
 title: "01-Redis"
 description: "阶段：中间件篇 ｜ 建议时长：4 天 ｜ 前置：MySQL 基础（03-数据库篇）、Spring Boot 基础"
-pubDatetime: 2026-08-26T12:00:00
+pubDatetime: 2026-08-25T22:00:00
 tags:
-  - "④ 中间件篇"
+  - "⑤ 中间件篇"
 
 draft: false
 ---
@@ -176,6 +176,7 @@ public class StockService {
 | Hash | `HSET/HGET/HGETALL`、`HDEL`、`HINCRBY` | 对象属性存储、购物车 |
 | Set | `SADD/SMEMBERS`、`SINTER/SUNION/SDIFF`、`SPOP` | 去重、共同好友、抽奖 |
 | ZSet | `ZADD`、`ZINCRBY`、`ZREVRANGE`、`ZRANK`、`ZRANGEBYSCORE` | 排行榜、延迟队列、范围检索 |
+| Stream | `XADD`、`XREADGROUP`、`XACK` | 消息队列/消费者组雏形（5.0+，面试加分项，了解即可） |
 | BitMap | `SETBIT/GETBIT`、`BITCOUNT` | 签到、活跃用户统计 |
 | 通用 | `EXPIRE/TTL`、`SCAN`、`DEL/UNLINK`、`TYPE` | 过期管理、渐进遍历、删除 |
 
@@ -223,6 +224,11 @@ public class StockService {
 - **热 key**：单个 key 被超高频率访问，打爆某个节点 → 本地缓存兜一层、key 加随机后缀打散到多节点。
 - **大 key**：value 过大（如百万元素的 List）→ 删除/迁移阻塞主线程 → 拆分成多 key、压缩、用 `UNLINK` 异步删除，`redis-cli --bigkeys` 排查。
 
+### 7. 发布/订阅与键过期通知
+
+- `SUBSCRIBE/PSUBSCRIBE` 频道订阅、`PUBLISH` 发布；配合 `notify-keyspace-events Ex` 可订阅**键过期/删除事件**，常见用法是集群各节点收到"某缓存 key 失效"广播后清掉本地缓存。
+- 缺陷：**不可靠**——订阅者离线期间的消息直接丢失，没有持久化、没有 ACK、没有重投。结论：做**缓存失效广播**这类"丢一两次无大碍"的事可以，做**业务消息**（订单、支付）不行 → 这正是需要专业 MQ（RabbitMQ/Kafka/RocketMQ）的理由。
+
 ## 高频面试题
 
 **Q：Redis 为什么快？**
@@ -237,6 +243,7 @@ public class StockService {
 - Hash：对象按字段存取（购物车、用户属性）；
 - Set：去重、共同关注（SINTER）、抽奖（SPOP）；
 - ZSet：排行榜（分数排序）、延迟队列（score 存执行时间）。
+- 加分项：还有 **Stream**（5.0+，带 ID 的消息流 + 消费者组 + ACK，消息队列雏形），以及 BitMap/HyperLogLog/GEO 等扩展类型。
 
 **Q：持久化怎么选？**
 - RDB 快照：文件小恢复快，但会丢两次快照间的数据；

@@ -1,9 +1,9 @@
 ---
 title: "08-MongoDB"
 description: "阶段：中间件篇 ｜ 建议时长：2 天 ｜ 前置：MySQL 基础（03-数据库篇）"
-pubDatetime: 2026-08-24T11:00:00
+pubDatetime: 2026-08-23T21:00:00
 tags:
-  - "④ 中间件篇"
+  - "⑤ 中间件篇"
 
 draft: false
 ---

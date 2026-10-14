@@ -15,7 +15,7 @@ title: 关于本指南
 
 - **零基础**：先读[学习路线图](/java-study-guide/posts/ROADMAP/)，然后从[环境搭建与基础语法](/java-study-guide/posts/01-环境搭建与基础语法/)逐篇推进，配合[进度打卡表](/java-study-guide/posts/STUDY-TRACKER/)勾选。
 - **有基础**：把[打卡表](/java-study-guide/posts/STUDY-TRACKER/)当自测清单，不会的再进对应文章补。
-- **面试冲刺**：过两份[八股速查](/java-study-guide/posts/01-Java高频八股速查/)，刷[选择填空题库](/java-study-guide/posts/05-选择填空题库/)，按[考点详略表](/java-study-guide/posts/06-考点详略表/)取舍精力；「练习场」里有章节小考、综合大考和八股闪卡。
+- **面试冲刺**：过两份[八股速查](/java-study-guide/posts/01-Java高频八股速查/)，刷[选择填空判断题库](/java-study-guide/posts/05-选择填空题库/)，按[考点详略表](/java-study-guide/posts/06-考点详略表/)取舍精力；「练习场」里有章节小考、综合大考和八股闪卡。
 - **离线版**：仓库根目录的 `index.html` 双击即可离线使用全部练习功能。
 
 学习进度按浏览器域名分别保存，可用练习场左下角「导出进度 / 导入进度」迁移。

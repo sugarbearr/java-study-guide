@@ -1,7 +1,7 @@
 ---
 title: "05-Lambda-Stream与Java8新特性"
 description: "阶段：入门篇 ｜ 建议时长：3 天 ｜ 前置：03-集合与泛型.md"
-pubDatetime: 2026-08-28T06:00:00
+pubDatetime: 2026-08-30T00:00:00
 tags:
   - "① 入门篇"
 
@@ -158,6 +158,9 @@ long between = ChronoUnit.DAYS.between(now, d);            // 间隔天数
 | Java 14+ | switch 表达式、文本块 `"""`（13+）、instanceof 模式匹配（16+）、record 不可变数据类（16+） |
 | Java 17（LTS） | sealed 密封类（限定继承体系）、RandomGenerator、更强 G1 |
 | Java 21（LTS） | **虚拟线程**正式发布（轻量级并发，见文件 6）、模式匹配 switch、结构化并发预览 |
+| Java 25（LTS，2025.9） | 稳定 generational ZGC、分代 G1 默认、Server-Sent Events 客户端、更多模式匹配语法糖；新项目选型推荐 |
+
+- 选型口径：**存量项目 8 最多、新立项 17 起步、追新选 25（LTS）**；Spring Boot 3.x 要求 Java 17+，Spring Boot 4.0（2025.11 发布）基于 Spring Framework 7 并优先支持 Java 21/25。
 
 - `var` 只用于局部变量且必须有初始值，可读性优先；`record` 一行定义不可变 DTO：`record Point(int x, int y) {}` 自动生成构造/访问器/equals/hashCode。
 

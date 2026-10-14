@@ -1,9 +1,9 @@
 ---
 title: "SpringBoot实战"
 description: "阶段：框架篇 ｜ 建议时长：5 天 ｜ 前置：01-Spring核心.md"
-pubDatetime: 2026-08-23T21:00:00
+pubDatetime: 2026-08-27T09:00:00
 tags:
-  - "⑤ 框架篇"
+  - "④ 框架篇"
 
 draft: false
 ---

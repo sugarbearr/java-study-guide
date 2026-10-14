@@ -1,7 +1,7 @@
 ---
 title: "01-Java高频八股速查"
 description: "阶段：面试篇 ｜ 用法：遮住答案自测，能独立说出 3 条以上要点再打勾；冲刺期每天过一遍"
-pubDatetime: 2026-08-22T10:00:00
+pubDatetime: 2026-08-22T17:00:00
 tags:
   - "⑦ 面试篇"
 
@@ -41,7 +41,7 @@ draft: false
 - [ ] **Q：注解的原理？** —— @interface 本质是继承 Annotation 的接口，运行期靠反射读取元数据，Retention 决定保留到源码/字节码/运行期 ｜ 详见[《04-异常-IO-反射-注解》](/java-study-guide/posts/04-异常-IO-反射-注解/)
 - [ ] **Q：什么是泛型擦除？** —— 泛型只存在于编译期做类型检查，运行期 List\<String\> 与 List\<Integer\> 都是 List，桥接方法保证多态 ｜ 详见[《03-集合与泛型》](/java-study-guide/posts/03-集合与泛型/)
 - [ ] **Q：static 关键字的用法？** —— 静态变量/方法/代码块/内部类都属于类而非实例，静态方法不能访问实例成员，加载时初始化 ｜ 详见[《01-环境搭建与基础语法》](/java-study-guide/posts/01-环境搭建与基础语法/)
-- [ ] **Q：内部类有哪些？** —— 成员、静态、局部、匿名内部类；匿名内部类访问局部变量要求 effectively final ｜ 详见[《04-异常-IO-反射-注解》](/java-study-guide/posts/04-异常-IO-反射-注解/)
+- [ ] **Q：内部类有哪些？** —— 成员、静态、局部、匿名内部类；匿名内部类访问局部变量要求 effectively final ｜ 详见[《02-面向对象与核心类》](/java-study-guide/posts/02-面向对象与核心类/)
 - [ ] **Q：BigDecimal 为什么能避免精度丢失？** —— 用"无标度整数+标度"精确表示十进制；金额计算必用，除法必须指定舍入模式与精度 ｜ 详见[《02-面向对象与核心类》](/java-study-guide/posts/02-面向对象与核心类/)
 - [ ] **Q：Java 8 有哪些新特性？** —— Lambda、函数式接口、Stream、Optional、接口 default 方法、新时间日期 API ｜ 详见[《05-Lambda-Stream与Java8新特性》](/java-study-guide/posts/05-Lambda-Stream与Java8新特性/)
 - [ ] **Q：Stream 常用操作？** —— 中间操作 filter/map/sorted/flatMap 惰性执行，终端操作 collect/reduce/count/forEach 触发计算，只能消费一次 ｜ 详见[《05-Lambda-Stream与Java8新特性》](/java-study-guide/posts/05-Lambda-Stream与Java8新特性/)
@@ -64,7 +64,7 @@ draft: false
 - [ ] **Q：遍历集合时如何安全删除元素？** —— 用 Iterator.remove() 或 removeIf()，不能在 for-each 中直接 list.remove() ｜ 详见[《03-集合与泛型》](/java-study-guide/posts/03-集合与泛型/)
 - [ ] **Q：TreeMap 的底层与使用场景？** —— 红黑树实现，key 有序，支持范围查询与首个/最后一个元素，需自然排序或 Comparator ｜ 详见[《03-集合与泛型》](/java-study-guide/posts/03-集合与泛型/)
 - [ ] **Q：List/Set/Queue/Map 怎么选型？** —— 有序可重复选 List、去重选 Set、先进先出/优先级选 Queue、键值映射选 Map，再看是否需要排序与并发 ｜ 详见[《03-集合与泛型》](/java-study-guide/posts/03-集合与泛型/)
-- [ ] **Q：ArrayList 线程安全吗？怎么解决？** —— 不安全；Vector 已过时，读多写少用 CopyOnWriteArrayList，或 Collections.synchronizedList ｜ 详见[《01-多线程与并发编程》](/java-study-guide/posts/01-多线程与并发编程/)
+- [ ] **Q：ArrayList 线程安全吗？怎么解决？** —— 不安全；Vector 已过时，读多写少用 CopyOnWriteArrayList，或 Collections.synchronizedList ｜ 详见[《03-集合与泛型》](/java-study-guide/posts/03-集合与泛型/)
 - [ ] **Q：Comparable 与 Comparator 的区别？** —— Comparable 在类内部定义自然排序（compareTo），Comparator 外部定制排序规则（compare），后者可多套并存 ｜ 详见[《03-集合与泛型》](/java-study-guide/posts/03-集合与泛型/)
 
 ### 并发（20 题）

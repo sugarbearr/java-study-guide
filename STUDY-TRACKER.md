@@ -37,7 +37,14 @@
 - [ ] Stream 分组/过滤/汇总一套连招
 - [ ] map vs flatMap 讲得清
 - [ ] Optional 正确用法
-- [ ] Java 8→21 版本脉络一句话各自说得出
+- [ ] Java 8→25 版本脉络一句话各自说得出
+
+### [07-设计模式](01-入门篇/07-设计模式.md)
+- [ ] SOLID 五原则各举一个 Java 例子
+- [ ] 手写双重检查锁单例并解释 volatile
+- [ ] JDK 动态代理 vs CGLIB 适用条件讲得清
+- [ ] Spring 里的设计模式对照表能背 6 行
+- [ ] 用策略模式重构一段 if-else（有代码）
 
 ## ② 进阶篇
 
@@ -65,6 +72,14 @@
 - [ ] BIO/NIO/AIO 区别与 NIO 三大件
 - [ ] 零拷贝是什么
 - [ ] Netty 为什么快
+- [ ] Cookie/Session/JWT 三者关系与选型
+
+### [04-开发工具链](02-进阶篇/04-开发工具链-Git-Maven-Linux.md)
+- [ ] Git：制造并解决一次冲突；说清 merge vs rebase 与禁忌
+- [ ] Git：reset --soft/mixed/hard 三者区别实际用过
+- [ ] Maven：dependency:tree 排查一次依赖冲突并排除
+- [ ] Linux：ps/top -Hp/jstack 排查链能盲打
+- [ ] Linux：awk 统计 access.log Top10 IP 写过
 
 ## ③ 数据库篇
 
@@ -86,7 +101,7 @@
 
 ## ④ 框架篇
 
-### [01-Spring核心](05-框架篇/01-Spring核心.md)
+### [01-Spring核心](04-框架篇/01-Spring核心.md)
 - [ ] IoC/DI 是什么、解决什么
 - [ ] Bean 生命周期与作用域
 - [ ] AOP 原理（JDK 代理 vs CGLIB）
@@ -94,29 +109,42 @@
 - [ ] 循环依赖与三级缓存
 - [ ] SpringMVC 请求流程
 
-### [02-SpringBoot实战](05-框架篇/02-SpringBoot实战.md)
+### [02-SpringBoot实战](04-框架篇/02-SpringBoot实战.md)
 - [ ] 自动配置原理
 - [ ] yml 多环境与配置优先级
 - [ ] 统一返回 + 全局异常 + 参数校验
 - [ ] todo-list 项目完成并通过验收清单
 
-### [03-MyBatis](05-框架篇/03-MyBatis.md)
+### [03-MyBatis](04-框架篇/03-MyBatis.md)
 - [ ] #{} vs ${} 与 SQL 注入
 - [ ] 动态 SQL 标签熟练
 - [ ] 一级/二级缓存与二级缓存的风险
 - [ ] Mapper 接口无需实现类的原理
 - [ ] MyBatis-Plus 条件构造器/分页/乐观锁
 
-### [04-SpringCloud微服务](05-框架篇/04-SpringCloud微服务.md)
+### [04-SpringCloud微服务](04-框架篇/04-SpringCloud微服务.md)
 - [ ] 微服务拆分的收益与代价
 - [ ] Nacos 注册 + 配置热更新
 - [ ] OpenFeign 声明式调用与超时
 - [ ] Gateway 路由与全局过滤器
 - [ ] Sentinel 限流熔断配置过
 
+### [05-单元测试与工程质量](04-框架篇/05-单元测试与工程质量.md)
+- [ ] @SpringBootTest vs @WebMvcTest 适用场景说得清
+- [ ] Mockito when/verify 给 Service 写过测试
+- [ ] todo-list 核心 Service 有 3 个以上单测且 CI 能跑
+- [ ] 日志规范（SLF4J 门面、占位符、级别选择）落在项目里
+
+### [06-认证与安全](04-框架篇/06-认证与安全.md)
+- [ ] JWT 三段结构与验签流程画得出来
+- [ ] 密码存储用 BCrypt，能解释为什么不用 MD5
+- [ ] XSS/CSRF/SQL 注入三者防御不混淆
+- [ ] todo-list 登录发 token + 拦截器校验跑通
+- [ ] RBAC 四表设计写过
+
 ## ⑤ 中间件篇
 
-### [01-Redis](04-中间件篇/01-Redis.md)
+### [01-Redis](05-中间件篇/01-Redis.md)
 - [ ] 五大类型各自的使用场景
 - [ ] RDB vs AOF vs 混合持久化
 - [ ] 过期删除与内存淘汰策略
@@ -126,49 +154,49 @@
 - [ ] 主从/哨兵/Cluster 区别
 - [ ] Spring Boot 整合 demo 跑通
 
-### [02-RabbitMQ](04-中间件篇/02-RabbitMQ.md)
+### [02-RabbitMQ](05-中间件篇/02-RabbitMQ.md)
 - [ ] 四种交换机与路由
 - [ ] 消息不丢全链路（confirm/持久化/ACK/死信）
 - [ ] 幂等消费方案
 - [ ] 延迟队列两种实现
 - [ ] Spring Boot 收发 demo 跑通
 
-### [03-Kafka](04-中间件篇/03-Kafka.md)
+### [03-Kafka](05-中间件篇/03-Kafka.md)
 - [ ] Topic/Partition/Replica/消费组概念
 - [ ] ACK 级别与 ISR
 - [ ] 分区内有序怎么保证
 - [ ] 为什么快（顺序写/零拷贝/批量）
 - [ ] 命令行 + Spring Boot demo 跑通
 
-### [04-RocketMQ](04-中间件篇/04-RocketMQ.md)
+### [04-RocketMQ](05-中间件篇/04-RocketMQ.md)
 - [ ] 架构组件与部署模型
 - [ ] 事务消息流程（半消息+回查）
 - [ ] 顺序消息实现
 - [ ] 延迟消息等级
 - [ ] 三大 MQ 选型对比说得出口
 
-### [05-Elasticsearch](04-中间件篇/05-Elasticsearch.md)
+### [05-Elasticsearch](05-中间件篇/05-Elasticsearch.md)
 - [ ] 倒排索引原理
 - [ ] Index/Mapping/Shard 概念与 MySQL 对照
 - [ ] match/term/bool DSL 练过
 - [ ] text vs keyword
 - [ ] MySQL→ES 数据同步方案对比
 
-### [06-ZooKeeper与Nacos](04-中间件篇/06-ZooKeeper与Nacos.md)
+### [06-ZooKeeper与Nacos](05-中间件篇/06-ZooKeeper与Nacos.md)
 - [ ] ZK znode/临时节点/Watcher
 - [ ] ZK 分布式锁原理
 - [ ] ZK 的 CP 特性对注册中心意味着什么
 - [ ] Nacos 注册 + 配置热更新
 - [ ] AP/CP 选型说得清
 
-### [07-Nginx](04-中间件篇/07-Nginx.md)
+### [07-Nginx](05-中间件篇/07-Nginx.md)
 - [ ] 正向 vs 反向代理
 - [ ] server/location 配置写过
 - [ ] 四种负载均衡策略
 - [ ] 动静分离与限流 limit_req
 - [ ] Nginx 与网关的分工
 
-### [08-MongoDB](04-中间件篇/08-MongoDB.md)
+### [08-MongoDB](05-中间件篇/08-MongoDB.md)
 - [ ] 文档模型与 MySQL 概念对照
 - [ ] CRUD 与聚合管道入门
 - [ ] 适用与不适用场景
@@ -191,6 +219,13 @@
 - [ ] 分库分表的问题清单
 - [ ] 秒杀系统全链路（含防超卖）
 - [ ] Redis+Lua 限流器写过
+
+### [03-系统设计场景题](06-分布式与高并发篇/03-系统设计场景题.md)
+- [ ] 答题框架（澄清→估算→存储→链路→难点）能背
+- [ ] 短链系统能讲 5 分钟（301 vs 302、Base62、发号器）
+- [ ] 布隆过滤器容量/误差公式与「不能删」讲得清
+- [ ] 订单超时关闭四方案对比选型说得出口
+- [ ] 排行榜 ZSET 同分处理 + Feed 推拉结合各能讲一遍
 
 ## ⑦ 面试篇
 
@@ -224,10 +259,15 @@
 - [ ] 完成 3 次模拟面试（自录/朋友/AI）
 
 ### [05-选择填空题库](07-面试篇/05-选择填空题库.md)
-- [ ] 48 道选择题全部做过（应用「📝 选择填空练习」）
-- [ ] 20 道填空题全部做过
+- [ ] 97 道选择题全部做过（应用「📝 选择填空练习」）
+- [ ] 32 道填空题 + 12 道判断题全部做过
 - [ ] 最近一轮全部答对（🔁 只做错题时池为空）
 - [ ] 累计正确率 ≥ 90%
+
+### [06-考点详略表](07-面试篇/06-考点详略表.md)
+- [ ] 通读一遍，确认 🔴/🟡/🟢 三档划分与自己的薄弱项一致
+- [ ] 按「最小可行知识面」清单排出自己冲刺期的前 6 项
+- [ ] 每 2 周对照一次，动态调整精力分配
 
 ---
 
