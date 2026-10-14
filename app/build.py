@@ -960,12 +960,20 @@ function fmtMs(ms) {
   const t = Math.max(0, Math.floor(ms / 1000));
   return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0');
 }
+let examSetup = { cat: 'all', diff: 'all' };
 function renderExam() {
   const s = examSession;
   if (!s) {
+    const cats = [...new Set((DATA.quiz || []).map(q => q.cat))].sort();
+    const cnt = (DATA.quiz || []).filter(q => (examSetup.cat === 'all' || q.cat === examSetup.cat) && (examSetup.diff === 'all' || q.diff === examSetup.diff)).length;
     $('#content').innerHTML = '<div class="cards-wrap"><div class="md"><h1>🏁 综合大考</h1>'
-      + '<p style="color:var(--muted);font-size:13.5px">从全部 ' + (DATA.quiz || []).length + ' 题中随机抽题、统一计时，交卷后出分并逐题解析；成绩计入错题本与首页「薄弱环节」。建议大部分内容学完后再来，每次大考间隔至少一周。</p></div>'
+      + '<p style="color:var(--muted);font-size:13.5px">从 ' + cnt + ' 题中随机抽题、统一计时，交卷后出分并逐题解析；成绩计入错题本与首页「薄弱环节」。建议大部分内容学完后再来，每次大考间隔至少一周。</p></div>'
       + '<div class="fcard" style="align-items:center;gap:16px;text-align:center">'
+      + '<div class="chips" style="justify-content:center;margin:0">'
+      + '<span class="chip ' + (examSetup.cat === 'all' ? 'on' : '') + '" onclick="examSetup.cat=\'all\';renderExam()">全部板块</span>'
+      + cats.map(c => '<span class="chip ' + (examSetup.cat === c ? 'on' : '') + '" onclick="examSetup.cat=' + JSON.stringify(c).replace(/"/g, '&quot;') + ';renderExam()">' + esc(c) + '</span>').join('') + '</div>'
+      + '<div class="chips" style="justify-content:center;margin:0">'
+      + ['all', '易', '中', '难'].map(d => '<span class="chip ' + (examSetup.diff === d ? 'on' : '') + '" onclick="examSetup.diff=\'' + d + '\';renderExam()">' + (d === 'all' ? '全部难度' : d + '题') + '</span>').join('') + '</div>'
       + '<div style="font-size:13.5px;color:var(--muted)">选择题量（每题 1 分钟，中途可切换题目）</div>'
       + '<div class="chips" style="justify-content:center;margin:0">'
       + [10, 20, 40].map(n => '<span class="chip" onclick="startExam(' + n + ')">' + n + ' 题 · ' + n + ' 分钟</span>').join('')
@@ -1028,7 +1036,7 @@ function renderExam() {
 }
 function startExam(n) {
   if (examTimer) clearInterval(examTimer);
-  const pool = (DATA.quiz || []).slice();
+  const pool = (DATA.quiz || []).filter(q => (examSetup.cat === 'all' || q.cat === examSetup.cat) && (examSetup.diff === 'all' || q.diff === examSetup.diff));
   const order = shuffledArr(pool).slice(0, Math.min(n, pool.length));
   examSession = { phase: 'run', order, i: 0, answers: {}, result: {}, deadline: Date.now() + order.length * 60000, startTs: Date.now(), usedMs: 0 };
   examTimer = setInterval(examTick, 500);

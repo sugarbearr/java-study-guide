@@ -713,14 +713,26 @@ const payload = JSON.stringify(rawData).replace(/<\//g, "<\\/");
 
   /* ---- 综合大考 ---- */
   let examSession: any = null, examTimer: any = null;
+  let examSetup: any = { cat: "all", diff: "all" };
   function renderExam() {
     const s = examSession;
     if (!s) {
+      const cats = [...new Set(DATA.quiz.map((q: any) => q.cat))].sort();
+      const cnt = DATA.quiz.filter((q: any) =>
+        (examSetup.cat === "all" || q.cat === examSetup.cat) &&
+        (examSetup.diff === "all" || q.diff === examSetup.diff)).length;
       $("#pg-view").innerHTML = `<div class="pg-panel" style="text-align:center">
-        <div class="pg-q" style="margin-bottom:0.4rem">从全部 ${DATA.quiz.length} 题中随机抽题、统一计时，交卷后出分并逐题解析</div>
-        <div class="pg-muted">成绩计入错题本与「薄弱环节」。建议大部分内容学完后再来。</div>
-        <div class="pg-chips" style="justify-content:center;margin-top:1rem">
-        ${[10, 20, 40].map(n => `<span class="pg-chip" style="padding:0.4rem 1rem" onclick="window.__pgStartExam(${n})">${n} 题 · ${n} 分钟</span>`).join("")}</div>
+        <div class="pg-q" style="margin-bottom:0.4rem">从 ${cnt} 题中随机抽题、统一计时，交卷后出分并逐题解析</div>
+        <div class="pg-chips" style="justify-content:center;margin-top:0.6rem">
+          <span class="pg-chip ${examSetup.cat === "all" ? "on" : ""}" onclick="examSetup.cat='all';renderExam()">全部板块</span>
+          ${cats.map((c: any) => `<span class="pg-chip ${examSetup.cat === c ? "on" : ""}" onclick="examSetup.cat='${esc(String(c))}';renderExam()">${esc(String(c))}</span>`).join("")}
+        </div>
+        <div class="pg-chips" style="justify-content:center">
+          ${["all", "易", "中", "难"].map((d: string) => `<span class="pg-chip ${examSetup.diff === d ? "on" : ""}" onclick="examSetup.diff='${d}';renderExam()">${d === "all" ? "全部难度" : d + "题"}</span>`).join("")}
+        </div>
+        <div class="pg-muted" style="margin-top:0.6rem">成绩计入错题本与「薄弱环节」。建议大部分内容学完后再来。</div>
+        <div class="pg-chips" style="justify-content:center;margin-top:0.6rem">
+        ${[10, 20, 40].map(n => `<span class="pg-chip" style="padding:0.4rem 1rem;${n > cnt ? "opacity:0.4" : ""}" onclick="window.__pgStartExam(${n})">${n} 题 · ${n} 分钟</span>`).join("")}</div>
         <div class="pg-muted" style="margin-top:0.6rem">快捷键：数字键 1~4 选答案 · 左右方向键切题 · E 交卷</div></div>`;
       return;
     }
@@ -778,7 +790,10 @@ const payload = JSON.stringify(rawData).replace(/<\//g, "<\\/");
   }
   w.__pgStartExam = (n: number) => {
     if (examTimer) clearInterval(examTimer);
-    const order = shuffledArr(DATA.quiz.slice()).slice(0, Math.min(n, DATA.quiz.length));
+    const pool = DATA.quiz.filter((q: any) =>
+      (examSetup.cat === "all" || q.cat === examSetup.cat) &&
+      (examSetup.diff === "all" || q.diff === examSetup.diff));
+    const order = shuffledArr(pool.slice()).slice(0, Math.min(n, pool.length));
     examSession = { phase: "run", order, i: 0, answers: {}, result: {}, deadline: Date.now() + order.length * 60000, startTs: Date.now(), usedMs: 0 };
     examTimer = setInterval(examTick, 500);
     renderExam();
